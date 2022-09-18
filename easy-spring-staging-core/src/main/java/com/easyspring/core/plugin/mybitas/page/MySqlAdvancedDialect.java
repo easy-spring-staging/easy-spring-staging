@@ -1,13 +1,6 @@
 /**
- * ProjectName:    Easy-Java-Rest-Framework
- * PackageName:    com.ejwf.core.plugin.mybitas.page
- * FileName：      MySqlAdvancedDialect.java
- * Copyright:      Copyright(C) 2020
- * Company:        easy-spring-staging Co.
- * Author:         caobaoyu
- * CreateDate:     2020/3/23 9:58
+ * Copyright: Copyright(C) 2020 Easy-Java-Rest-Framework.
  */
-
 package com.easyspring.core.plugin.mybitas.page;
 
 import com.github.pagehelper.Page;
