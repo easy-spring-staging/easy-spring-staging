@@ -3,6 +3,8 @@
  */
 package com.easyspring.core.conf.swagger;
 
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.*;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
@@ -18,7 +20,7 @@ import java.util.List;
  * @author caobaoyu
  * @create 2021-09-10 9:56
  **/
-public abstract class AbstractSwaggerConfiguration {
+public abstract class AbstractSwaggerConfiguration  implements WebMvcConfigurer {
     public Docket createDocket(
             String projectName,
             String basePackage,
@@ -123,9 +125,23 @@ public abstract class AbstractSwaggerConfiguration {
                 .version(version)
                 .build();
     }
-//    private String getModelRefName(){
-//        return ResponseModel.class.getName().replace(ResponseModel.class.getPackage().getName()+".","");
-//    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+        registry.addResourceHandler("/swagger-resources/**")
+                .addResourceLocations("classpath:/META-INF/resources/swagger-resources/");
+
+        registry.addResourceHandler("/swagger/**")
+                .addResourceLocations("classpath:/META-INF/resources/swagger*");
+
+        registry.addResourceHandler("/v2/api-docs/**")
+                .addResourceLocations("classpath:/META-INF/resources/v2/api-docs/");
+    }
 
 
 }

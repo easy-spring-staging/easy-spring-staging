@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EmployeeInfoDefine">
+
+    <!--添加数据开始-->
+    <sql id="insertDefine">
+        insert into demo_employee_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="accountId != null">account_id,</if>
+            <if test="employeeName != null">employee_name,</if>
+            <if test="entryTime != null">entry_time,</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            #{id},
+            <if test="accountId != null">#{accountId},</if>
+            <if test="employeeName != null">#{employeeName},</if>
+            <if test="entryTime != null">#{entryTime},</if>
+        </trim>
+    </sql>
+    <!--添加数据结束-->
+
+    <!--修改数据开始-->
+    <sql id="updateDefine">
+        update demo_employee_info
+        <set>
+            <if test="m.accountId != null">account_id = #{m.accountId},</if>
+            <if test="m.employeeName != null">employee_name = #{m.employeeName},</if>
+            <if test="m.entryTime != null">entry_time = #{m.entryTime},</if>
+        </set>
+        where id = #{k}
+    </sql>
+    <!--修改数据结束-->
+
+    <!--全量修改数据开始-->
+    <sql id="updateAllDefine">
+        update demo_employee_info
+        <set>
+            account_id = #{m.accountId},
+            employee_name = #{m.employeeName},
+            entry_time = #{m.entryTime},
+        </set>
+        where id = #{k}
+    </sql>
+    <!--全量修改数据结束-->
+
+    <!--删除数据开始-->
+    <sql id="deleteDefine">
+		delete from demo_employee_info where id = #{k}
+	</sql>
+    <!--删除数据结束-->
+
+    <!--批量删除数据开始-->
+    <sql id="deleteMultiDefine">
+        delete from demo_employee_info
+        <where>
+            <if test="ks != null">
+                id in
+                <foreach collection="ks" item="k" index="no" open="(" separator="," close=")">
+                    #{k}
+                </foreach>
+            </if>
+            <if test="ks == null">
+                1=2
+            </if>
+        </where>
+    </sql>
+    <!--批量删除数据结束-->
+
+</mapper>
+

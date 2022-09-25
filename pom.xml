@@ -10,6 +10,7 @@
 
     <modules>
         <module>./easy-spring-staging-core</module>
+        <module>./mvc-simple-demo</module>
     </modules>
 
     <properties>

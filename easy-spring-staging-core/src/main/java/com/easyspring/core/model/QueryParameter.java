@@ -17,6 +17,11 @@ import java.util.HashMap;
  * @date 2020/5/15 14:51
  */
 public class QueryParameter extends HashMap<String, Object> {
+
+    public static final String SORT_PARAM_KEY_NAME ="sort";
+    public static final String SORT_PARAM_VALUE_DELIMITER =",";
+    public static final String SORT_TYPE_ASC = "ASC";
+    public static final String SORT_TYPE_DESC = "DESC";
     /**
      * 分页信息
      */
@@ -47,7 +52,7 @@ public class QueryParameter extends HashMap<String, Object> {
     }
     @Override
     public String toString(){
-        StringBuffer sb = new StringBuffer("RequestModel(");
+        StringBuffer sb = new StringBuffer("QueryParameter(");
         boolean first = true;
         for(String key : this.keySet()){
             if(!first){

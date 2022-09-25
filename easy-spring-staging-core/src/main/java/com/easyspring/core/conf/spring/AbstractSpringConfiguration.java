@@ -25,15 +25,15 @@ public abstract class AbstractSpringConfiguration implements WebMvcConfigurer {
      */
     public abstract void addCustomResourceHandlers(ResourceHandlerRegistry registry);
 
-    public abstract boolean isSwagger();
+//    public abstract boolean isSwagger();
 
     public abstract boolean isCors();
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        if (isSwagger()) {
-            addSwagger(registry);
-        }
+//        if (isSwagger()) {
+//            addSwagger(registry);
+//        }
         addCustomResourceHandlers(registry);
 
     }
@@ -45,22 +45,22 @@ public abstract class AbstractSpringConfiguration implements WebMvcConfigurer {
         }
     }
 
-    private void addSwagger(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-
-        registry.addResourceHandler("/swagger-resources/**")
-                .addResourceLocations("classpath:/META-INF/resources/swagger-resources/");
-
-        registry.addResourceHandler("/swagger/**")
-                .addResourceLocations("classpath:/META-INF/resources/swagger*");
-
-        registry.addResourceHandler("/v2/api-docs/**")
-                .addResourceLocations("classpath:/META-INF/resources/v2/api-docs/");
-    }
+//    private void addSwagger(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("swagger-ui.html")
+//                .addResourceLocations("classpath:/META-INF/resources/");
+//
+//        registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//
+//        registry.addResourceHandler("/swagger-resources/**")
+//                .addResourceLocations("classpath:/META-INF/resources/swagger-resources/");
+//
+//        registry.addResourceHandler("/swagger/**")
+//                .addResourceLocations("classpath:/META-INF/resources/swagger*");
+//
+//        registry.addResourceHandler("/v2/api-docs/**")
+//                .addResourceLocations("classpath:/META-INF/resources/v2/api-docs/");
+//    }
 
     private void addCors(CorsRegistry registry) {
         registry.addMapping("/**")
