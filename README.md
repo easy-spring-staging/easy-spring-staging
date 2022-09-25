@@ -19,10 +19,11 @@ easy-spring-staging采用以代码模板(注：模板可以自定义)方式根�
 #### Idea打开工程
 打开工程，创建mvc-simple-demo目录
 
-![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZbMnCTw*yQ.WafgbNzTKShJpANHeHChsG9YpYWS1D6*KNYLgSqrf08LSUTpc.lAR*Yp8sK1xAfmqujSJxa2xQos!/b&bo=owP5AaMD.QEDByI!&rf=viewer_4)
-### 安装easy code插件
-
 ![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZbMnCTw*yQ.WafgbNzTKShJpANHeHChsG9YpYWS1D6*KNYLgSqrf08LSUTpc.lAR*Yp8sK1xAfmqujSJxa2xQos!/b&bo=owP5AaMD.QEDFzI!&rf=viewer_4)
+### 安装easy code插件
+<a href="https://github.com/makejavas/EasyCode" target="_blank">EasyCode</a>
+
+![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZevEykC8JNLUvqmZoPcZiFRvN9Dcvg6Xs80cGBdQfwmQpFjAxefx8GUSUiAnBaRaFjlBPO6IoQnnWeifs09Xz00!/b&bo=cAcbBHAHGwQDByI!&rf=viewer_4)
 ### 导入easy code模板
 ![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZbsOTxeQ3NKlFCNvuug7Hhb5L0LUr85IUvg0vNOVVjzXeNgiXzVxJDaMAJEtqsv6FejfwnKiBWZ4ezvK6iNAUAY!/b&bo=4QPKAgAAAAADBwg!&rf=viewer_4)
 
