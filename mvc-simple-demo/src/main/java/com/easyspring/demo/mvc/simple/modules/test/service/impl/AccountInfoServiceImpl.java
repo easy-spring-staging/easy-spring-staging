@@ -1,11 +1,10 @@
-package com.easyspring.demo.mvc.simple.modules.campus.service.impl;
+package com.easyspring.demo.mvc.simple.modules.test.service.impl;
 
 import com.easyspring.core.pattern.mvc.simple.service.AbstractService;
 import com.easyspring.core.pattern.mvc.simple.dao.BaseDao;
-import com.easyspring.core.sercurity.AuthorizationUser;
-import com.easyspring.demo.mvc.simple.modules.campus.model.AccountInfo;
-import com.easyspring.demo.mvc.simple.modules.campus.dao.AccountInfoDao;
-import com.easyspring.demo.mvc.simple.modules.campus.service.AccountInfoService;
+import com.easyspring.demo.mvc.simple.modules.test.model.AccountInfo;
+import com.easyspring.demo.mvc.simple.modules.test.dao.AccountInfoDao;
+import com.easyspring.demo.mvc.simple.modules.test.service.AccountInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

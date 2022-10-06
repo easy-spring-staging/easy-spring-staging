@@ -1,4 +1,4 @@
-package com.easyspring.demo.mvc.simple.modules.campus.controller;
+package com.easyspring.demo.mvc.simple.modules.test.controller;
 
 import com.easyspring.core.argument.SwaggerParam;
 import com.easyspring.core.argument.UserParam;
@@ -7,8 +7,8 @@ import com.easyspring.core.model.QueryParameter;
 import com.easyspring.core.model.ResponseModel;
 import com.easyspring.core.pattern.mvc.simple.controller.BaseRest;
 import com.easyspring.core.sercurity.AuthorizationUser;
-import com.easyspring.demo.mvc.simple.modules.campus.model.SalaryInfo;
-import com.easyspring.demo.mvc.simple.modules.campus.service.SalaryInfoService;
+import com.easyspring.demo.mvc.simple.modules.test.model.SalaryInfo;
+import com.easyspring.demo.mvc.simple.modules.test.service.SalaryInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

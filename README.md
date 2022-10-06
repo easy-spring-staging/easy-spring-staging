@@ -65,14 +65,14 @@
 ![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZZZQKZKFnXfKpq6wEPBskzbxC98VmRJtb48GgWbzGY.YKZCtfoD3eP9JT7rO.9QHUE0p4elogBA1Y7Qdaqr4J2Q!/b&bo=gAciBIAHIgQDByI!&rf=viewer_4)
 3、生成工程REST API代码
 创建模块包
-![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZbpJvqDRtArwll8lzpw58QQ3DVLTzun7SuQk6l5VQSrjzBZTnZwUXL7CUpF1*G5xrSKA1ciZGmSRqAFNwJBZCwU!/b&bo=gAciBIAHIgQDByI!&rf=viewer_4)
+![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZTaAlSpLL1tI7OnB2TFgkoxM3MaL0ojLlZT3o.QQX1ZrFrzpJkJ5V31rxLOObNNP72fNTRvgHtKdLXYF85DcWJA!/b&bo=gAciBIAHIgQDByI!&rf=viewer_4)
 设置EasyCode插件的Global Config：选择ESS-MVC-SI-API，修改sitting点击“OK”
 ![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZQms4cV7gvsfHG2PGxSHh8UXkCVLCZEGQ4CEB1*tJUKBIaMHMjBZ4wWdbZ2LI5UV7v2*PNE3s3y6tff8ocRZqkg!/b&bo=gAcaBIAHGgQDByI!&rf=viewer_4)
 选择要生成代码的所有表点击鼠标右键，选择EasyCode > Generate Code,设置相应配置项，点击“OK”
 ![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZfKuLr*bCW0NCJ8srjiCK61MetREKzzY*s8poi1mR*fcOqhVXivROQV1vV7pBDyeQplHhgF3oSp5iTsKXOUj.6g!/b&bo=gAciBIAHIgQDByI!&rf=viewer_4)
-![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZRDQLEeleEC49ElSkMnGhEcVMr8aG3x.d97e7ti9zJ5PfIHRCca2M.hlQAQRul0fRhdQdymJ.V3Fl33TlMlv9vk!/b&bo=gAciBIAHIgQDFzI!&rf=viewer_4)
+![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZWdhYilzicUzGMtjAYuzV*QUA9AbhQgKAMxdPOGuF6BBhQXKd.rh1VSVbD41KBhQwpk5X3GdpFn47sgnEop49uk!/b&bo=gAciBIAHIgQDFzI!&rf=viewer_4)
 目录结构如下：
-![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZd0Pmh6u3.uE*Vd5MPdLFeQZRWvcRGjEVWA06akLaMX*BkKWZAgOVkApLbB6gLkhdErzvRpQlASgvSWJefDqdm0!/b&bo=gAciBIAHIgQDFzI!&rf=viewer_4)
+![avatar](http://m.qpic.cn/psc?/V51ZBlr00lMhVT1pEITA4aBZaC1BLPNL/6tCTPh7N*X6CBkvkDvKlZRxafLlghpN0NEOb3OCJjz.nSceheUn8FYylSntIHDlRrA5zGO5onRgX7fjsNV*xDPce*o9w*3BmvafwiANJT04!/b&bo=gAciBIAHIgQDFzI!&rf=viewer_4)
 
 4、运行工程
 运行com.easyspring.demo.mvc.simple.AppLaunch

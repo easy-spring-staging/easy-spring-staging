@@ -1,8 +1,7 @@
-package com.easyspring.demo.mvc.simple.modules.campus.service;
+package com.easyspring.demo.mvc.simple.modules.test.service;
 
 import com.easyspring.core.pattern.mvc.simple.service.BaseService;
-import com.easyspring.core.sercurity.AuthorizationUser;
-import com.easyspring.demo.mvc.simple.modules.campus.model.AccountInfo;
+import com.easyspring.demo.mvc.simple.modules.test.model.AccountInfo;
 
 public interface AccountInfoService extends BaseService<String, AccountInfo> {
     String id = "id";

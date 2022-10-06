@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.easyspring.demo.mvc.simple.modules.campus.dao.SalaryInfoDao">
+<mapper namespace="com.easyspring.demo.mvc.simple.modules.test.dao.SalaryInfoDao">
 
 	<!--查询详情数据开始-->
-	<select id="load" parameterType="java.lang.String" resultType="com.easyspring.demo.mvc.simple.modules.campus.model.SalaryInfo">
+	<select id="load" parameterType="java.lang.String" resultType="com.easyspring.demo.mvc.simple.modules.test.model.SalaryInfo">
 		SELECT 
 			id, account_id, year_number, month_number, salary_amount		
 		FROM demo_salary_info 
@@ -12,7 +12,7 @@
 	<!--查询详情数据结束-->
 	
 	<!--查询列表数据开始-->
-	<select id="query" parameterType="com.easyspring.core.model.QueryParameter" resultType="com.easyspring.demo.mvc.simple.modules.campus.model.SalaryInfo">
+	<select id="query" parameterType="com.easyspring.core.model.QueryParameter" resultType="com.easyspring.demo.mvc.simple.modules.test.model.SalaryInfo">
 		SELECT 
 			id, account_id, year_number, month_number, salary_amount		
 		FROM demo_salary_info 
@@ -36,7 +36,7 @@
 	
 	
 	<!--新增数据开始-->
-	<insert id="insert" parameterType="com.easyspring.demo.mvc.simple.modules.campus.model.SalaryInfo">
+	<insert id="insert" parameterType="com.easyspring.demo.mvc.simple.modules.test.model.SalaryInfo">
 		<selectKey resultType="java.lang.String" keyColumn="id" keyProperty="id" order="BEFORE" >
 			SELECT REPLACE(UUID(), '-', '') FROM DUAL
 		</selectKey>
@@ -45,13 +45,13 @@
 	<!--新增数据结束-->
 
 	<!--修改数据开始-->
-	<update id="update" parameterType="com.easyspring.demo.mvc.simple.modules.campus.model.SalaryInfo">
+	<update id="update" parameterType="com.easyspring.demo.mvc.simple.modules.test.model.SalaryInfo">
 		<include refid="SalaryInfoDefine.updateDefine"/>
 	</update>
 	<!--修改数据结束-->
 	
 	<!--全量修改数据开始-->
-	<update id="updateAll" parameterType="com.easyspring.demo.mvc.simple.modules.campus.model.SalaryInfo">
+	<update id="updateAll" parameterType="com.easyspring.demo.mvc.simple.modules.test.model.SalaryInfo">
 		<include refid="SalaryInfoDefine.updateAllDefine"/>
 	</update>
 	<!--全量修改数据结束-->
@@ -69,7 +69,7 @@
 	<!--删除数据结束-->
 	
 	<!--通过Key集合查询列表数据开始-->
-	<select id="list" resultType="com.easyspring.demo.mvc.simple.modules.campus.model.SalaryInfo">
+	<select id="list" resultType="com.easyspring.demo.mvc.simple.modules.test.model.SalaryInfo">
 		SELECT 
 			id, account_id, year_number, month_number, salary_amount		
 		FROM demo_salary_info 

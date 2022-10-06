@@ -1,12 +1,9 @@
-package com.easyspring.demo.mvc.simple.modules.campus.model;
+package com.easyspring.demo.mvc.simple.modules.test.model;
 
 import com.easyspring.core.model.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import java.util.Date;
-import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
