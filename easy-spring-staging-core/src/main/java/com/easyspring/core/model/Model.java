@@ -8,11 +8,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 
 /**
- * 抽象DTO.
+ * 模型接口
  *
+ * @param <K> 模型主键类型
  * @author caobaoyu
- * @create 2021-09-03 17:10
- **/
+ * @date 2022/10/1 23:32
+ */
 public interface Model<K> extends Serializable {
 
     @JsonIgnore

@@ -23,45 +23,23 @@ public abstract class AbstractSpringConfiguration implements WebMvcConfigurer {
      * @author caobaoyu
      * @date 2021/9/10 15:16
      */
+
     public abstract void addCustomResourceHandlers(ResourceHandlerRegistry registry);
 
-//    public abstract boolean isSwagger();
-
+    /**
+     * 获取是否开启跨域共享资源状态
+     *
+     * @return 开启跨域共享资源状态, true:开启；false:不开启
+     */
     public abstract boolean isCors();
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        if (isSwagger()) {
-//            addSwagger(registry);
-//        }
-        addCustomResourceHandlers(registry);
-
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        if (isCors()) {
-            addCors(registry);
-        }
-    }
-
-//    private void addSwagger(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("swagger-ui.html")
-//                .addResourceLocations("classpath:/META-INF/resources/");
-//
-//        registry.addResourceHandler("/webjars/**")
-//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-//
-//        registry.addResourceHandler("/swagger-resources/**")
-//                .addResourceLocations("classpath:/META-INF/resources/swagger-resources/");
-//
-//        registry.addResourceHandler("/swagger/**")
-//                .addResourceLocations("classpath:/META-INF/resources/swagger*");
-//
-//        registry.addResourceHandler("/v2/api-docs/**")
-//                .addResourceLocations("classpath:/META-INF/resources/v2/api-docs/");
-//    }
-
+    /**
+     * 跨域共享资源登记信息构建
+     *
+     * @param registry 跨域注册器
+     * @author caobaoyu
+     * @create 2021-09-10 15:17
+     */
     private void addCors(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
@@ -71,4 +49,17 @@ public abstract class AbstractSpringConfiguration implements WebMvcConfigurer {
                 .exposedHeaders(HttpHeaders.SET_COOKIE)
                 .maxAge(3600L);
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        addCustomResourceHandlers(registry);
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        if (isCors()) {
+            addCors(registry);
+        }
+    }
+
 }

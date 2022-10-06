@@ -6,11 +6,12 @@ package com.easyspring.core.model.vo;
 import com.easyspring.core.model.Model;
 
 /**
- * VO抽象详情展示模型.
+ * 抽象详情视图模型类
  *
+ * @param <K> 模型主键类型
  * @author caobaoyu
- * @create 2021-09-03 17:07
- **/
+ * @date 2022/10/1 23:26
+ */
 public abstract class AbstractDetailVO<K> implements Model<K> {
 
 }

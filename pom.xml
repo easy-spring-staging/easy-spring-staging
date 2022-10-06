@@ -35,10 +35,10 @@
         <pagehelper-spring-boot-starter-version>1.4.4</pagehelper-spring-boot-starter-version>
         <guava-version>20.0</guava-version>
         <lombok-version>1.18.24</lombok-version>
+        <mapstruct-version>1.5.0.Final</mapstruct-version>
         <fastjson-version>2.0.12</fastjson-version>
 
         <snakeyaml-version>1.29</snakeyaml-version>
-        <mapstruct-version>1.5.2.Final</mapstruct-version>
         <spring-boot-starter-tomcat-version>2.7.3</spring-boot-starter-tomcat-version>
         <spring-boot-starter-jetty-version>2.7.3</spring-boot-starter-jetty-version>
         <xnio-nio-version>3.8.1.Final</xnio-nio-version>
@@ -49,7 +49,7 @@
     <!--所有子工程公用的第三方依赖进行约束声明开始-->
     <dependencyManagement>
         <dependencies>
-<!-- spring 框架依赖定义开始-->
+            <!-- spring 框架依赖定义开始-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -70,8 +70,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-<!-- spring 框架依赖定义结束-->
-<!--web server依赖定义开始-->			
+            <!-- spring 框架依赖定义结束-->
+            <!--web server依赖定义开始-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -88,8 +88,8 @@
                 <artifactId>spring-boot-starter-undertow</artifactId>
                 <version>${spring-boot-starter-undertow-version}</version>
             </dependency>
-<!--web server依赖定义结束-->
-<!--swagger依赖定义开始-->		
+            <!--web server依赖定义结束-->
+            <!--swagger依赖定义开始-->
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
@@ -108,19 +108,18 @@
             </dependency>
 
 
-
             <!--swagger依赖定义结束-->
-<!--
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-alibaba-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
--->
+            <!--
+                        <dependency>
+                            <groupId>com.alibaba.cloud</groupId>
+                            <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                            <version>${spring-cloud-alibaba-version}</version>
+                            <type>pom</type>
+                            <scope>import</scope>
+                        </dependency>
+            -->
 
-<!-- mysql 依赖定义开始-->
+            <!-- mysql 依赖定义开始-->
 
             <dependency>
                 <groupId>mysql</groupId>
@@ -133,29 +132,39 @@
                 <version>${druid-spring-boot-starter-version}</version>
             </dependency>
 
-<!-- mysql 依赖定义结束-->
-<!-- mybatis 依赖定义开始-->
+            <!-- mysql 依赖定义结束-->
+            <!-- mybatis 依赖定义开始-->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis-spring-boot-starter-version}</version>
             </dependency>
-<!-- mybatis 依赖定义结束-->
-<!-- 分页 依赖定义开始-->
+            <!-- mybatis 依赖定义结束-->
+            <!-- 分页 依赖定义开始-->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper-spring-boot-starter-version}</version>
             </dependency>
-<!-- 分页 依赖定义开始-->
+            <!-- 分页 依赖定义开始-->
 
-<!-- 工具包 依赖定义开始-->
+            <!-- 工具包 依赖定义开始-->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava-version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct-version}</version>
+                <scope>provided</scope>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -173,35 +182,12 @@
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid-spring-boot-starter-version}</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
-<!--
-            <dependency>
-                <groupId>org.yaml</groupId>
-                <artifactId>snakeyaml</artifactId>
-                <version>${snakeyaml-version}</version>
-            </dependency>
--->
-            <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct</artifactId>
-                <version>${mapstruct-version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-processor</artifactId>
-                <version>${mapstruct-version}</version>
-            </dependency>
-
-
             <dependency>
                 <groupId>org.jboss.xnio</groupId>
                 <artifactId>xnio-nio</artifactId>
                 <version>${xnio-nio-version}</version>
             </dependency>
-<!-- 工具包 依赖定义结束-->
+            <!-- 工具包 依赖定义结束-->
         </dependencies>
     </dependencyManagement>
     <!--所有子工程公用的第三方依赖进行约束声明结束-->

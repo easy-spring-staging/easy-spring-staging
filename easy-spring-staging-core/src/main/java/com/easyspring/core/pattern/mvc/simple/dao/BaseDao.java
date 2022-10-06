@@ -3,8 +3,8 @@
  */
 package com.easyspring.core.pattern.mvc.simple.dao;
 
+import com.easyspring.core.model.Model;
 import com.easyspring.core.model.QueryParameter;
-import com.easyspring.core.model.AbstractModel;
 import com.easyspring.core.sercurity.AuthorizationUser;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,7 +19,7 @@ import java.util.List;
  * @author caobaoyu
  * @date 2020/5/15 14:37
  */
-public interface BaseDao<K, M extends AbstractModel<K>> {
+public interface BaseDao<K, M extends Model<K>> {
 
     /**
      * 通过主键查询详情信息 .

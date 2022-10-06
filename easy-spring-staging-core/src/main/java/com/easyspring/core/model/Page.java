@@ -24,14 +24,25 @@ import java.util.Map;
  *
  * @author caobaoyu
  * @date 2020/3/20 15:14
- *
  */
 @ApiModel(value = "PageModel", description = "分页")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class Page<M> {
-    public static final String PAGE_SIZE_PARAM_NAME ="pageSize";
-    public static final String PAGE_NUM_PARAM_NAME ="pageNum";
+
+    // 每页大小参数名称
+    public static final String PAGE_SIZE_PARAM_NAME = "pageSize";
+
+    // 页序号参数名称
+    public static final String PAGE_NUM_PARAM_NAME = "pageNum";
+
+    /**
+     * 通过pagehelper插件的page模型构建Page
+     *
+     * @param p pagehelper插件的page模型
+     * @author caobaoyu
+     * @date 2020/3/20 15:20
+     */
     public Page(com.github.pagehelper.Page<M> p) {
         this.pageNum = p.getPageNum();
         this.pageSize = p.getPageSize();
@@ -41,7 +52,17 @@ public class Page<M> {
         this.pages = p.getPages();
         this.list = p.getResult();
     }
-    public Page(Page p,List<M> modelList) {
+
+    /**
+     * 通过page和list构建Page
+     *
+     * @param p         分析模型
+     * @param modelList 数据模型List
+     * @author caobaoyu
+     * @date 2020/3/20 15:22
+     */
+
+    public Page(Page p, List<M> modelList) {
         this.pageNum = p.getPageNum();
         this.pageSize = p.getPageSize();
         this.startRow = p.getStartRow();
@@ -51,8 +72,9 @@ public class Page<M> {
         this.list = modelList;
 
     }
+
     public Page(List<M> modelList) {
-        if(modelList!=null){
+        if (modelList != null) {
             int modelListSizeInt = modelList.size();
             Long modelListSizeLong = Long.getLong(Integer.toString(modelListSizeInt));
             this.pageNum = 1;
@@ -109,23 +131,22 @@ public class Page<M> {
     /**
      * 附加信息，一般用于分页数据同时需要附加一下全局信息
      */
-    private Map<String,Object> attachedInfo;
+    private Map<String, Object> attachedInfo;
+
     /**
      * 添加附加信息 .
      *
-     *  <p>
+     * <p>
      * 添加附加信息
      *
      * @param keyName key名称
-     * @param value  值
-     *
-     *
+     * @param value   值
      * @author caobaoyu
      * @date 2020/3/20 15:36
      */
     @JsonIgnore
-    public void addAttachedInfo(String keyName,Object value){
-        if(keyName!=null && value!=null) {
+    public void addAttachedInfo(String keyName, Object value) {
+        if (keyName != null && value != null) {
             if (attachedInfo == null) {
                 attachedInfo = new HashMap<>();
             }
@@ -139,28 +160,26 @@ public class Page<M> {
     }
 
 
-
-
     public Integer getPageNum() {
-        if(pageNum==null) {
+        if (pageNum == null) {
             return 1;
-        }else {
+        } else {
             return pageNum;
         }
     }
 
     public void setPageNum(Integer pageNum) {
-        if(pageNum<1) {
+        if (pageNum < 1) {
             this.pageNum = 1;
-        }else {
+        } else {
             this.pageNum = pageNum;
         }
     }
 
     public Integer getPageSize() {
-        if(pageSize==null) {
+        if (pageSize == null) {
             return 0;
-        }else {
+        } else {
             return pageSize;
         }
     }

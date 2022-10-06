@@ -3,10 +3,16 @@
  */
 package com.easyspring.core.pattern.mvc.simple.service;
 
-import com.easyspring.core.model.AbstractModel;
+import com.easyspring.core.executor.add.AddExecutor;
+import com.easyspring.core.executor.edit.EditAllExecutor;
+import com.easyspring.core.executor.edit.EditExecutor;
+import com.easyspring.core.executor.query.QueryDetailsExecutor;
+import com.easyspring.core.executor.query.QueryPageExecutor;
+import com.easyspring.core.executor.remove.RemoveExecutor;
+import com.easyspring.core.executor.remove.RemoveMultiExecutor;
+import com.easyspring.core.model.Model;
 import com.easyspring.core.model.Page;
 import com.easyspring.core.model.QueryParameter;
-import com.easyspring.core.executor.*;
 import com.easyspring.core.sercurity.AuthorizationUser;
 
 import java.util.List;
@@ -20,7 +26,7 @@ import java.util.List;
  * @author caobaoyu
  * @date 2020/5/15 15:36
  */
-public interface BaseService<K, M extends AbstractModel<K>> {
+public interface BaseService<K, M extends Model<K>> {
 
     /**
      * 通过主键查询详情信息 .
@@ -28,8 +34,8 @@ public interface BaseService<K, M extends AbstractModel<K>> {
      * <p>
      * 通过主键查询详情信息
      *
-     * @param k 主键
-     * @param u 鉴权用户模型
+     * @param k         主键
+     * @param u         鉴权用户模型
      * @param executors 执行器
      * @return M 数据模型
      * @throws Exception 数据库异常
@@ -40,8 +46,8 @@ public interface BaseService<K, M extends AbstractModel<K>> {
 
 
     /**
-     * @param q 查询参数
-     * @param u 鉴权用户模型
+     * @param q         查询参数
+     * @param u         鉴权用户模型
      * @param executors 执行器
      * @return Page<M> 分页数据模型
      * @throws Exception
@@ -62,7 +68,7 @@ public interface BaseService<K, M extends AbstractModel<K>> {
      * @author caobaoyu
      * @date 2020/5/15 15:24
      */
-    // List<M> queryList(String fn, List<? extends Object> ks, AuthorizationUser u) throws Exception;
+    List<M> queryList(String fn, List<? extends Object> ks, AuthorizationUser u) throws Exception;
 
 
     /**
@@ -75,7 +81,7 @@ public interface BaseService<K, M extends AbstractModel<K>> {
      * @autho caobaoyu
      * @date 2021/9/4 9:18
      */
-    // Integer count(QueryParameter q, AuthorizationUser u) throws Exception;
+    Integer count(QueryParameter q, AuthorizationUser u) throws Exception;
 
     /**
      * 添加数据 .
@@ -83,15 +89,15 @@ public interface BaseService<K, M extends AbstractModel<K>> {
      * <p>
      * 添加数据
      *
-     * @param m 数据模型
-     * @param u 鉴权用户模型
+     * @param m         数据模型
+     * @param u         鉴权用户模型
      * @param executors 执行器
      * @return K 主键
      * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2020/5/15 15:13
      */
-    K add(M m, AuthorizationUser u, AddExecutor<K, M >... executors) throws Exception;
+    K add(M m, AuthorizationUser u, AddExecutor<K, M>... executors) throws Exception;
 
 
     /**
@@ -100,8 +106,8 @@ public interface BaseService<K, M extends AbstractModel<K>> {
      * <p>
      * 通过主键删除数据
      *
-     * @param k 主键
-     * @param u 鉴权用户模型
+     * @param k         主键
+     * @param u         鉴权用户模型
      * @param executors 执行器
      * @return java.lang.Boolean 删除是否成功
      * @throws Exception 数据库异常
@@ -117,8 +123,8 @@ public interface BaseService<K, M extends AbstractModel<K>> {
      * <p>
      * 通过主键List删除数据 .
      *
-     * @param ks 主键List
-     * @param u  鉴权用户模型
+     * @param ks        主键List
+     * @param u         鉴权用户模型
      * @param executors 执行器
      * @return java.lang.Integer 删除记录数
      * @throws Exception 数据库异常
@@ -133,9 +139,9 @@ public interface BaseService<K, M extends AbstractModel<K>> {
      * <p>
      * 修改数据,字段为空不修改
      *
-     * @param k 主键
-     * @param m 数据模型
-     * @param u 鉴权用户模型
+     * @param k         主键
+     * @param m         数据模型
+     * @param u         鉴权用户模型
      * @param executors 执行器
      * @return java.lang.Boolean
      * @throws Exception 数据库异常
@@ -150,9 +156,9 @@ public interface BaseService<K, M extends AbstractModel<K>> {
      * <p>
      * 修改数据,字段为空修改为空
      *
-     * @param k 主键
-     * @param m 数据模型
-     * @param u 鉴权用户模型
+     * @param k         主键
+     * @param m         数据模型
+     * @param u         鉴权用户模型
      * @param executors 执行器
      * @return java.lang.Boolean
      * @throws Exception 数据库异常
