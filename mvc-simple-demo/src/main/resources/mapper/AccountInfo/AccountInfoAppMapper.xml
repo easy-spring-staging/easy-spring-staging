@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyspring.demo.mvc.simple.modules.test.dao.AccountInfoDao">
+
+	<!--查询详情数据开始-->
+	<select id="load" parameterType="java.lang.String" resultType="com.easyspring.demo.mvc.simple.modules.test.model.AccountInfo">
+		SELECT 
+			id, account_name, gender, create_time		
+		FROM demo_account_info 
+		where id = #{k}
+	</select>
+	<!--查询详情数据结束-->
+	
+	<!--查询列表数据开始-->
+	<select id="query" parameterType="com.easyspring.core.model.QueryParameter" resultType="com.easyspring.demo.mvc.simple.modules.test.model.AccountInfo">
+		SELECT 
+			id, account_name, gender, create_time		
+		FROM demo_account_info 
+		<where>
+			1=1
+		</where>
+		 ${q.sort} 
+	</select>
+	<!--查询列表数据结束-->
+
+	<!--查询列数量开始-->
+	<select id="count" parameterType="com.easyspring.core.model.QueryParameter" resultType="java.lang.Integer">
+		SELECT 
+			count(id) 
+		FROM demo_account_info 
+		<where>
+			1=1
+		</where>
+	</select>
+	<!--查询数量结束-->
+	
+	
+	<!--新增数据开始-->
+	<insert id="insert" parameterType="com.easyspring.demo.mvc.simple.modules.test.model.AccountInfo">
+		<selectKey resultType="java.lang.String" keyColumn="id" keyProperty="id" order="BEFORE" >
+			SELECT REPLACE(UUID(), '-', '') FROM DUAL
+		</selectKey>
+		<include refid="AccountInfoDefine.insertDefine"/>
+	</insert>
+	<!--新增数据结束-->
+
+	<!--修改数据开始-->
+	<update id="update" parameterType="com.easyspring.demo.mvc.simple.modules.test.model.AccountInfo">
+		<include refid="AccountInfoDefine.updateDefine"/>
+	</update>
+	<!--修改数据结束-->
+	
+	<!--全量修改数据开始-->
+	<update id="updateAll" parameterType="com.easyspring.demo.mvc.simple.modules.test.model.AccountInfo">
+		<include refid="AccountInfoDefine.updateAllDefine"/>
+	</update>
+	<!--全量修改数据结束-->
+	
+    <!--删除数据开始-->
+    <delete id="delete" parameterType="java.lang.String">
+        <include refid="AccountInfoDefine.deleteDefine"/>
+    </delete>
+	<!--删除数据结束-->
+
+    <!--删除数据开始-->
+    <delete id="deleteMulti" parameterType="java.util.List">
+        <include refid="AccountInfoDefine.deleteMultiDefine"/>
+    </delete>
+	<!--删除数据结束-->
+	
+	<!--通过Key集合查询列表数据开始-->
+	<select id="list" resultType="com.easyspring.demo.mvc.simple.modules.test.model.AccountInfo">
+		SELECT 
+			id, account_name, gender, create_time		
+		FROM demo_account_info 
+        <where>
+            <if test="ks != null">
+                ${fn} in
+                <foreach collection="ks" item="k" index="no" open="(" separator="," close=")">
+                    #{k}
+                </foreach>
+            </if>
+            <if test="ks == null">
+                1=2
+            </if>
+        </where>
+	</select>
+	<!--通过Key集合查询列表数据结束-->
+
+</mapper>
+
