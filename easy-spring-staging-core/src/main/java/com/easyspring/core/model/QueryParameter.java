@@ -19,6 +19,35 @@ import java.util.Map;
  */
 public class QueryParameter extends HashMap<String, Object> {
 
+    /**
+     * 请求参数构建器
+     */
+    public static class QueryParameterBuilder{
+        private HashMap<String, Object> data;
+        public QueryParameterBuilder(){
+            data = new HashMap<>();
+        }
+        public QueryParameterBuilder add(String key, Object value){
+            this.data.put(key, value);
+            return this;
+        }
+
+        public QueryParameterBuilder setPageNum(Integer pageNum){
+            this.data.put(Page.PAGE_NUM_PARAM_NAME, pageNum);
+            return this;
+        }
+
+        public QueryParameterBuilder setPageSize(Integer pageSize){
+            this.data.put(Page.PAGE_SIZE_PARAM_NAME, pageSize);
+            return this;
+        }
+        public QueryParameter build(){
+            QueryParameter queryParameter = new QueryParameter(data);
+            queryParameter.initPage();
+            return queryParameter;
+        }
+    }
+
     // 排序参数名称
     public static final String SORT_PARAM_KEY_NAME = "sort";
     // 排序参数分割符号
@@ -27,8 +56,18 @@ public class QueryParameter extends HashMap<String, Object> {
     public static final String SORT_TYPE_ASC = "ASC";
     // 将序符号
     public static final String SORT_TYPE_DESC = "DESC";
+    public static QueryParameterBuilder builder() {
+        return new QueryParameterBuilder();
+    }
     // 分页模型
     private Page<?> pageModel;
+
+    public QueryParameter(HashMap<String, Object> data){
+        super(data);
+    }
+    public QueryParameter(){
+        super();
+    }
 
     // 获取分页模型
     public Page<?> getPageModel() {
@@ -60,6 +99,14 @@ public class QueryParameter extends HashMap<String, Object> {
         }
         pageModel = new Page<>(pageNum, pageSize);
 
+    }
+
+    @JsonIgnore
+    public QueryParameter add(String key,Object value){
+        if (key != null) {
+            put(key, value);
+        }
+        return this;
     }
 
     /**

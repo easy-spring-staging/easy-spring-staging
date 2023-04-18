@@ -1,6 +1,7 @@
 package com.easyspring.demo.mvc.simple.modules.test.service.impl;
 
 import com.easyspring.core.executor.query.QueryPagePostExecutor;
+import com.easyspring.core.model.QueryParameter;
 import com.easyspring.core.pattern.mvc.simple.service.AbstractService;
 import com.easyspring.core.pattern.mvc.simple.dao.BaseDao;
 import com.easyspring.core.sercurity.AuthorizationUser;
@@ -36,6 +37,10 @@ public class EmployeeInfoServiceImpl extends AbstractService<String, EmployeeInf
 
     private QueryPagePostExecutor<String,EmployeeInfo> queryPageExecutor;
 
+    public QueryPagePostExecutor<String,EmployeeInfo> getQueryPageExecutor(){
+        return queryPageExecutor;
+    }
+
 
     @PostConstruct
     private void builderQueryPageExecutor(){
@@ -50,9 +55,7 @@ public class EmployeeInfoServiceImpl extends AbstractService<String, EmployeeInf
         };
     }
 
-    public QueryPagePostExecutor<String,EmployeeInfo> getQueryPageExecutor(){
-        return queryPageExecutor;
-    }
+
     @Override
     public BaseDao<String, EmployeeInfo> getDao() {
         return this.employeeInfoDao;

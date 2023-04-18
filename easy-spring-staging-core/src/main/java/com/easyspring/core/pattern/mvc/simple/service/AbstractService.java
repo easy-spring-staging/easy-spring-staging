@@ -295,7 +295,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
   public M queryDetails(AuthorizationUser<?, ?, ?, ?> u, K k, QueryDetailsExecutor<K, M>... executors) throws Exception {
     M m;
     queryDetailsExecute(u, QueryDetailsPerExecutor.class, k, null, executors);
-    m = getDao().load(k, u);
+    m = getDao().load(u, k);
     queryDetailsExecute(u, QueryDetailsPostExecutor.class, k, m, executors);
     return m;
   }
@@ -307,10 +307,10 @@ public abstract class AbstractService<K, M extends Model<K>> {
     q.initPage();
     queryPageExecute(u, QueryPagePerExecutor.class, q, null, executors);
     if (q.isPage()) {
-      com.github.pagehelper.Page<M> pageHelperPage = PageHelper.startPage(q.getPageModel().getPageNo(), q.getPageModel().getPageSize()).doSelectPage(() -> getDao().query(q, u));
+      com.github.pagehelper.Page<M> pageHelperPage = PageHelper.startPage(q.getPageModel().getPageNo(), q.getPageModel().getPageSize()).doSelectPage(() -> getDao().query(u, q));
       page = new Page<>(pageHelperPage);
     } else {
-      List<M> list = getDao().query(q, u);
+      List<M> list = getDao().query(u, q);
       page = new Page<>(list);
     }
     queryPageExecute( u, QueryPagePostExecutor.class, q, page, executors);
@@ -346,7 +346,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
   public Boolean remove(AuthorizationUser<?, ?, ?, ?> u, K k, RemoveExecutor<K>... executors) throws Exception {
     boolean result = false;
     removeExecute(u, RemovePerExecutor.class, k, executors);
-    int count = getDao().delete(k, u);
+    int count = getDao().delete(u, k);
     if (count > 0) {
       result = true;
     }
@@ -359,7 +359,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
   public Integer removeMulti(AuthorizationUser<?, ?, ?, ?> u, List<K> ks, RemoveMultiExecutor<K>... executors) throws Exception {
     Integer count;
     removeMultiExecute(u,RemoveMultiPerExecutor.class, ks,executors);
-    count = getDao().deleteMulti(ks, u);
+    count = getDao().deleteMulti(u, ks);
     removeMultiExecute(u, RemoveMultiPostExecutor.class, ks,executors);
     return count;
   }
@@ -370,7 +370,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
   public Boolean edit(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditExecutor<K, M>... executors) throws Exception {
     boolean result = false;
     editExecute(EditPerExecutor.class, k, u, m, executors);
-    int count = getDao().update(k, m, u);
+    int count = getDao().update(u, k, m);
     if (count > 0) {
       result = true;
     }
@@ -383,7 +383,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
   public Boolean editAll(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditAllExecutor<K, M>... executors) throws Exception {
     boolean result = false;
     editAllExecute(u, EditAllPerExecutor.class, k, m, executors);
-    int count = getDao().update(k, m, u);
+    int count = getDao().updateAll(u, k, m);
     if (count > 0) {
       result = true;
     }

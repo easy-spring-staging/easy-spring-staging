@@ -27,14 +27,14 @@ public interface BaseDao<K, M extends Model<K>> {
      * <p>
      * 通过主键查询详情信息
      *
-     * @param k 主键
      * @param u 用户模型
+     * @param k 主键
      * @return D 数据模型
      * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2020/5/15 14:59
      */
-    M load(@Param(value = "k") K k, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
+    M load(@Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "k") K k) throws Exception;
 
     /**
      * 通过多个条件查询列表
@@ -42,14 +42,14 @@ public interface BaseDao<K, M extends Model<K>> {
      * <p>
      * 通过多个条件查询列表
      *
-     * @param q 请求参数模型
      * @param u 用户模型
+     * @param q 请求参数模型
      * @return java.util.List<M> 数据List
      * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2020/5/15 15:04
      */
-    List<M> query(@Param(value = "q") QueryParameter q, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
+    List<M> query(@Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "q") QueryParameter q);
 
     /**
      * 通过主键集合查询列表数据 .
@@ -91,7 +91,7 @@ public interface BaseDao<K, M extends Model<K>> {
      * @author caobaoyu
      * @date 2020/5/15 15:13
      */
-    Integer insert(M m);
+    Integer insert(M m) throws Exception;
 
     /**
      * 通过主键删除数据 .
@@ -99,14 +99,14 @@ public interface BaseDao<K, M extends Model<K>> {
      * <p>
      * 通过主键删除数据
      *
-     * @param k 主键
      * @param u 用户模型
+     * @param k 主键
      * @return java.lang.Boolean 删除是否成功
      * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2020/5/15 15:17
      */
-    Integer delete(@Param(value = "k") K k, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
+    Integer delete( @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "k") K k) throws Exception;
 
     /**
      * 通过主键List删除数据 .
@@ -114,14 +114,14 @@ public interface BaseDao<K, M extends Model<K>> {
      * <p>
      * 通过主键List删除数据 .
      *
+     * @param u 用户模型
      * @param ks 主键数组
-     * @param u  用户模型
      * @return java.lang.Integer 删除记录数
      * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2020/5/15 15:24
      */
-    Integer deleteMulti(@Param(value = "ks") List<K> ks, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
+    Integer deleteMulti(@Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "ks") List<K> ks) throws Exception;
 
     /**
      * 修改数据 .
@@ -129,15 +129,15 @@ public interface BaseDao<K, M extends Model<K>> {
      * <p>
      * 修改数据
      *
+     * @param u 用户模型
      * @param k 主键
      * @param m 数据模型
-     * @param u 用户模型
      * @return java.lang.Boolean
      * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2020/5/15 15:28
      */
-    Integer update(@Param(value = "k") K k, @Param(value = "m") M m, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
+    Integer update( @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "k") K k, @Param(value = "m") M m) throws Exception;
 
     /**
      * 修改数据 .
@@ -145,13 +145,13 @@ public interface BaseDao<K, M extends Model<K>> {
      * <p>
      * 修改数据
      *
+     * @param u 用户模型
      * @param k 主键
      * @param m 数据模型
-     * @param u 用户模型
      * @return java.lang.Boolean
      * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2020/5/15 15:28
      */
-    Integer updateAll(@Param(value = "k") K k, @Param(value = "m") M m, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
+    Integer updateAll(@Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "k") K k, @Param(value = "m") M m) throws Exception;
 }
