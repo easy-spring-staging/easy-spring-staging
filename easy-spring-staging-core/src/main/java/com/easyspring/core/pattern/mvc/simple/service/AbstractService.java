@@ -50,8 +50,8 @@ public abstract class AbstractService<K, M extends Model<K>> {
    */
   protected static <R, M extends Model<?>> List<R> getModelPropertyList(Page<M> p, GetCallback<M, R> getCallback) {
     List<R> keys = null;
-    if (p != null && p.getList() != null && p.getList().size() > 0) {
-      List<R> keyList = p.getList().stream().map(getCallback::get).filter(Objects::nonNull).collect(Collectors.toList());
+    if (p != null && p.getItems() != null && p.getItems().size() > 0) {
+      List<R> keyList = p.getItems().stream().map(getCallback::get).filter(Objects::nonNull).collect(Collectors.toList());
       if (keyList.size() > 0) {
         keys = keyList;
       }
@@ -307,7 +307,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
     q.initPage();
     queryPageExecute(u, QueryPagePerExecutor.class, q, null, executors);
     if (q.isPage()) {
-      com.github.pagehelper.Page<M> pageHelperPage = PageHelper.startPage(q.getPageModel().getPageNum(), q.getPageModel().getPageSize()).doSelectPage(() -> getDao().query(q, u));
+      com.github.pagehelper.Page<M> pageHelperPage = PageHelper.startPage(q.getPageModel().getPageNo(), q.getPageModel().getPageSize()).doSelectPage(() -> getDao().query(q, u));
       page = new Page<>(pageHelperPage);
     } else {
       List<M> list = getDao().query(q, u);

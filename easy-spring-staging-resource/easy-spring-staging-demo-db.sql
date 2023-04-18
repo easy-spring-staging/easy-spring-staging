@@ -64,7 +64,7 @@ CREATE TABLE `demo_salary_info`  (
   `account_id` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '账号ID',
   `year_number` int(11) NULL DEFAULT NULL COMMENT '年份',
   `month_number` int(11) NULL DEFAULT NULL COMMENT '月份',
-  `salary_amount` float(255, 0) NULL DEFAULT NULL COMMENT '薪水（单位：元）',
+  `salary_amount` float NULL DEFAULT NULL COMMENT '薪水（单位：元）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '薪水' ROW_FORMAT = Dynamic;
 

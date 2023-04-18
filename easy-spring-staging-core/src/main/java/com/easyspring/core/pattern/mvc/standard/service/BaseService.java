@@ -61,7 +61,7 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * <p>
      * 通过主键集合查询列表数据  .
      *
-     * @param ks 字段名称
+     * @param fn 字段名称
      * @param ks key List
      * @param u  鉴权用户模型
      * @return List<M> 数据列表

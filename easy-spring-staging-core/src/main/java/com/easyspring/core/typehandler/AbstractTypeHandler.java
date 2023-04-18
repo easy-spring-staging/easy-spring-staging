@@ -28,18 +28,14 @@ public abstract class AbstractTypeHandler<T> extends BaseTypeHandler<T> {
         if(t==null){
             preparedStatement.setString(i, null);
         }else {
-            try{
-                String jsonStr = JSON.toJSONString(t);
-                preparedStatement.setString(i, jsonStr);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            String jsonStr = JSON.toJSONString(t);
+            preparedStatement.setString(i, jsonStr);
         }
     }
 
     @Override
     public T getNullableResult(ResultSet resultSet, String s) throws SQLException {
-        T t = null;
+        T t ;
         String tsStr = resultSet.getString(s);
         t = createTypeObject(tsStr);
         return t;
@@ -47,7 +43,7 @@ public abstract class AbstractTypeHandler<T> extends BaseTypeHandler<T> {
 
     @Override
     public T getNullableResult(ResultSet resultSet, int i) throws SQLException {
-        T  t = null;
+        T  t ;
         String tsStr = resultSet.getString(i);
         t = createTypeObject(tsStr);
         return t;
@@ -55,7 +51,7 @@ public abstract class AbstractTypeHandler<T> extends BaseTypeHandler<T> {
 
     @Override
     public T getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
-        T  t = null;
+        T  t;
         String tsStr = callableStatement.getString(i);
         t = createTypeObject(tsStr);
         return t;
@@ -67,7 +63,7 @@ public abstract class AbstractTypeHandler<T> extends BaseTypeHandler<T> {
             try{
                 t = createObject(tsStr);
             }catch (Exception e){
-                e.printStackTrace();
+               throw  new SQLException(e);
             }
         }
         return t;

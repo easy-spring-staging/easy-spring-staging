@@ -1,6 +1,7 @@
 package com.easyspring.core.executor.add;
 
 import com.easyspring.core.model.Model;
+import com.easyspring.core.sercurity.AuthorizationUser;
 
 /**
  * 前置新增执行器

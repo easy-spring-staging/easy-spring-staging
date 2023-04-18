@@ -71,8 +71,8 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
 
     @Transactional(readOnly = true)
     public M queryDetails(K k, AuthorizationUser<?, ?, ?, ?> u, QueryDetailsExecutor<K, M>... executors) throws Exception {
-        M m = null;
-        queryDetailsExecute(QueryDetailsPerExecutor.class, k, u, m, executors);
+        M m ;
+        queryDetailsExecute(QueryDetailsPerExecutor.class, k, u, null, executors);
         m = getConverter().poToDto(getDao().load(u, k));
         queryDetailsExecute(QueryDetailsPostExecutor.class, k, u, m, executors);
         return m;
@@ -102,15 +102,15 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
 
     @Transactional(readOnly = true)
     public Page<M> queryPage(QueryParameter q, AuthorizationUser<?, ?, ?, ?> u, QueryPageExecutor<K, M>... executors) throws Exception {
-        Page<M> page = null;
+        Page<M> page;
         q.initPage();
-        queryPageExecute(QueryPagePerExecutor.class, q, u, page, executors);
+        queryPageExecute(QueryPagePerExecutor.class, q, u, null, executors);
         if (q.isPage()) {
-            com.github.pagehelper.Page<M> pageHelperPage = PageHelper.startPage(q.getPageModel().getPageNum(), q.getPageModel().getPageSize()).doSelectPage(() -> getDao().query(u, q));
-            page = new Page(pageHelperPage);
+            com.github.pagehelper.Page<M> pageHelperPage = PageHelper.startPage(q.getPageModel().getPageNo(), q.getPageModel().getPageSize()).doSelectPage(() -> getDao().query(u, q));
+            page = new Page<>(pageHelperPage);
         } else {
             List<M> list = getConverter().poToDto(getDao().query(u, q));
-            page = new Page(list);
+            page = new Page<>(list);
         }
         queryPageExecute(QueryPagePostExecutor.class, q, u, page, executors);
         return page;
@@ -118,7 +118,7 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
 
     @Transactional(readOnly = true)
     public List<M> queryList(String fn, List<?> ks, AuthorizationUser<?, ?, ?, ?> u) throws Exception {
-        List<M> dataList = null;
+        List<M> dataList;
         dataList = getConverter().poToDto(getDao().list(u,fn, ks));
         return dataList;
     }
@@ -153,7 +153,7 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public K add(M m, AuthorizationUser<?, ?, ?, ?> u, AddExecutor<K, M>... executors) throws Exception {
         K k = null;
-        addExecute(AddPerExecutor.class, k, u, m, executors);
+        addExecute(AddPerExecutor.class, null, u, m, executors);
         P p = getConverter().dtoToPo(m);
         if (getDao().insert(p) > 0) {
             k = p.getKey();
@@ -185,7 +185,7 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public Boolean remove(AuthorizationUser<?, ?, ?, ?> u, K k, RemoveExecutor<K>... executors) throws Exception {
-        Boolean result = false;
+        boolean result = false;
         removeExecute(RemovePerExecutor.class, k, u, executors);
         int count = getDao().delete(u, k);
         if (count > 0) {
@@ -218,7 +218,7 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public Integer removeMulti(List<K> ks, AuthorizationUser<?, ?, ?, ?> u, RemoveMultiExecutor<K>... executors) throws Exception {
-        Integer count = 0;
+        Integer count;
         removeMultiExecute(RemoveMultiPerExecutor.class, ks, u, executors);
         count = getDao().deleteMulti(u, ks);
         removeMultiExecute(RemoveMultiPostExecutor.class, ks, u, executors);
@@ -249,7 +249,7 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public Boolean edit(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditExecutor<K, M>... executors) throws Exception {
-        Boolean result = false;
+        boolean result = false;
         editExecute(EditPerExecutor.class, k, u, m, executors);
         int count = getDao().update(u, k, getConverter().dtoToPo(m));
         if (count > 0) {
@@ -283,7 +283,7 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public Boolean editAll(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditAllExecutor<K, M>... executors) throws Exception {
-        Boolean result = false;
+        boolean result;
         editAllExecute(u,EditAllPerExecutor.class, k, m, executors);
         result = getDao().updateAll(u, k, getConverter().dtoToPo(m));
         editAllExecute(u, EditAllPostExecutor.class, k, m, executors);
@@ -304,8 +304,8 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
      */
     protected static <R, M extends Model<?>> List<R> getModelPropertyList(Page<M> p, GetCallback<M, R> getCallback) {
         List<R> keys = null;
-        if (p != null && p.getList() != null && p.getList().size() > 0) {
-            List<R> keyList = p.getList().stream().map(getCallback::get).filter(Objects::nonNull).collect(Collectors.toList());
+        if (p != null && p.getItems() != null && p.getItems().size() > 0) {
+            List<R> keyList = p.getItems().stream().map(getCallback::get).filter(Objects::nonNull).collect(Collectors.toList());
             if (keyList.size() > 0) {
                 keys = keyList;
             }

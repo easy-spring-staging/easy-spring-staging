@@ -5,6 +5,7 @@ package com.easyspring.core.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -33,16 +34,20 @@ public abstract class AbstractAspect {
     private Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
         // 获取HttpServletRequest
-        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        // 目标运行前时间戳
-        long startTime = System.currentTimeMillis();
-        // 前置处理
-        preProcess(req);
-        result = joinPoint.proceed(joinPoint.getArgs());
-        // 目标运行后时间戳
-        long endTime = System.currentTimeMillis();
-        // 后置处理
-        postProcess(startTime, endTime, result, req);
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            HttpServletRequest req = ((ServletRequestAttributes) requestAttributes).getRequest();
+            // 目标运行前时间戳
+            long startTime = System.currentTimeMillis();
+            // 前置处理
+            preProcess(req);
+            result = joinPoint.proceed(joinPoint.getArgs());
+            // 目标运行后时间戳
+            long endTime = System.currentTimeMillis();
+            // 后置处理
+            postProcess(startTime, endTime, result, req);
+        }
+
         return result;
     }
 
@@ -69,11 +74,11 @@ public abstract class AbstractAspect {
      * 切面前置处理
      *
      * @param req HttpServletRequest
-     * @throws Throwable 异常
+     * @throws Exception 异常
      * @author caobaoyu
      * @date 2018/11/1 12:50
      */
-    public abstract void preProcess(HttpServletRequest req) throws Throwable;
+    public abstract void preProcess(HttpServletRequest req) throws Exception;
 
     /**
      * 切面后置处理
@@ -82,9 +87,9 @@ public abstract class AbstractAspect {
      * @param endTime   执行结束时间(时间戳，毫秒)
      * @param result    目标对象对象返回值
      * @param req       HttpServletRequest
-     * @throws Throwable 异常
+     * @throws Exception 异常
      * @author caobaoyu
      * @date 2018/11/1 12:55
      */
-    public abstract void postProcess(long startTime, long endTime, Object result, HttpServletRequest req) throws Throwable;
+    public abstract void postProcess(long startTime, long endTime, Object result, HttpServletRequest req) throws Exception;
 }

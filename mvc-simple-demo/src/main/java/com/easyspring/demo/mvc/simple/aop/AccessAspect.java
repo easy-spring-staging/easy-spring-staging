@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 public class AccessAspect extends AbstractAspect {
 
     @Override
-    public void postProcess(long startTime, long endTime, Object result, HttpServletRequest request) throws Throwable {
+    public void postProcess(long startTime, long endTime, Object result, HttpServletRequest request) throws Exception {
     }
 
     @Override
-    public void preProcess(HttpServletRequest req) throws Throwable {
+    public void preProcess(HttpServletRequest req) throws Exception {
         String uri = req.getRequestURI();
         log.info("访问路径:" + uri);
     }

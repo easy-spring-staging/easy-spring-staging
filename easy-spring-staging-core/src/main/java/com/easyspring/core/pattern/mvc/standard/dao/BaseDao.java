@@ -65,7 +65,7 @@ public interface BaseDao<K, M extends AbstractPO<K>> {
    * @author caobaoyu
    * @date 2020/5/15 15:24
    */
-  List<M> list(@Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "fn") String fn, @Param(value = "ks") List<?> ks);
+  List<M> list(@Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "fn") String fn, @Param(value = "ks") List<?> ks) throws Exception;
 
   /**
    * 通过多个条件查询总记录数

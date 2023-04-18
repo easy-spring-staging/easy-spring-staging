@@ -30,7 +30,7 @@ public interface ControllerConverter<K, DV extends AbstractDetailVO<K>, LV exten
     default Page<LV> dtoToLv(Page<DTO> dto){
         Page<LV> pl = null;
         if(dto!=null){
-            List<LV> pageList = dtoToLv(dto.getList());
+            List<LV> pageList = dtoToLv(dto.getItems());
             pl = new Page<>(dto, pageList);
         }
         return pl;
