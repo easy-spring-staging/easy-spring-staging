@@ -14,24 +14,24 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @date 2022/10/1 22:40
  */
 public abstract class AbstractUserParamArgumentResolver implements HandlerMethodArgumentResolver {
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(UserParam.class);
-    }
+  @Override
+  public boolean supportsParameter(MethodParameter parameter) {
+    return parameter.hasParameterAnnotation(UserParam.class);
+  }
 
-    @Override
-    public AuthorizationUser resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        return parserUser(parameter, webRequest);
-    }
+  @Override
+  public AuthorizationUser<?, ?, ?, ?> resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    return parserUser(parameter, webRequest);
+  }
 
-    /**
-     * 解析用户信息的抽象方法
-     *
-     * @param parameter  方法参数
-     * @param webRequest request
-     * @return 无
-     * @author caobaoyu
-     * @date 2022/10/1 22:40
-     */
-    public abstract AuthorizationUser parserUser(MethodParameter parameter, NativeWebRequest webRequest);
+  /**
+   * 解析用户信息的抽象方法
+   *
+   * @param parameter  方法参数
+   * @param webRequest request
+   * @return 无
+   * @author caobaoyu
+   * @date 2022/10/1 22:40
+   */
+  public abstract AuthorizationUser<?, ?, ?, ?> parserUser(MethodParameter parameter, NativeWebRequest webRequest) throws Exception;
 }

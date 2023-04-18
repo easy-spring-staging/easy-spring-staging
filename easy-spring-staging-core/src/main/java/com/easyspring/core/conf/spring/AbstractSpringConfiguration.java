@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * spring抽象配置类.
  *
  * @author caobaoyu
- * @create 2021-09-10 15:07
+ * @date 2021-09-10 15:07
  **/
 public abstract class AbstractSpringConfiguration implements WebMvcConfigurer {
 
@@ -38,7 +38,7 @@ public abstract class AbstractSpringConfiguration implements WebMvcConfigurer {
      *
      * @param registry 跨域注册器
      * @author caobaoyu
-     * @create 2021-09-10 15:17
+     * @date 2021-09-10 15:17
      */
     private void addCors(CorsRegistry registry) {
         registry.addMapping("/**")

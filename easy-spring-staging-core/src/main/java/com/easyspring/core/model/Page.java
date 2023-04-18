@@ -28,7 +28,7 @@ import java.util.Map;
 @ApiModel(value = "PageModel", description = "分页")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
-public class Page<M extends Model> {
+public class Page<M extends Model<?>> {
 
     // 每页大小参数名称
     public static final String PAGE_SIZE_PARAM_NAME = "pageSize";
@@ -37,9 +37,9 @@ public class Page<M extends Model> {
     public static final String PAGE_NUM_PARAM_NAME = "pageNum";
 
     /**
-     * 通过pagehelper插件的page模型构建Page
+     * 通过page helper插件的page模型构建Page
      *
-     * @param p pagehelper插件的page模型
+     * @param p page helper插件的page模型
      * @author caobaoyu
      * @date 2020/3/20 15:20
      */
@@ -62,7 +62,7 @@ public class Page<M extends Model> {
      * @date 2020/3/20 15:22
      */
 
-    public Page(Page p, List<M> modelList) {
+    public Page(Page<?> p, List<M> modelList) {
         this.pageNum = p.getPageNum();
         this.pageSize = p.getPageSize();
         this.startRow = p.getStartRow();

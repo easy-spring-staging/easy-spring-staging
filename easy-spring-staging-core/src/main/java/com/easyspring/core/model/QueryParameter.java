@@ -28,15 +28,15 @@ public class QueryParameter extends HashMap<String, Object> {
     // 将序符号
     public static final String SORT_TYPE_DESC = "DESC";
     // 分页模型
-    private Page pageModel;
+    private Page<?> pageModel;
 
     // 获取分页模型
-    public Page getPageModel() {
+    public Page<?> getPageModel() {
         return pageModel;
     }
 
     // 设置分页模型
-    public void setPageModel(Page pageModel) {
+    public void setPageModel(Page<?> pageModel) {
         this.pageModel = pageModel;
     }
 
@@ -58,7 +58,7 @@ public class QueryParameter extends HashMap<String, Object> {
         if (pageSizeObject != null) {
             pageSize = (Integer) pageSizeObject;
         }
-        pageModel = new Page(pageNum, pageSize);
+        pageModel = new Page<>(pageNum, pageSize);
 
     }
 
@@ -71,8 +71,8 @@ public class QueryParameter extends HashMap<String, Object> {
      */
     @JsonIgnore
     public void sort(Map<String, String> columnMap) {
-        StringBuffer sortBuffer = new StringBuffer();
-        String sortExpression = null;
+        StringBuilder sortBuffer = new StringBuilder();
+        String sortExpression;
         Object sortParam = this.get(QueryParameter.SORT_PARAM_KEY_NAME);
         if (sortParam != null && columnMap != null && columnMap.size() > 0) {
             sortExpression = (String) sortParam;
@@ -82,7 +82,7 @@ public class QueryParameter extends HashMap<String, Object> {
                 if (s != null && !"".equals(s) && s.length() > 1) {
                     String sortTypeStr = s.substring(0, 1);
                     String sortType = null;
-                    String columnName = columnMap.get(s.substring(1, s.length()));
+                    String columnName = columnMap.get(s.substring(1));
                     switch (sortTypeStr) {
                         case "+":
                             sortType = QueryParameter.SORT_TYPE_ASC;
@@ -125,7 +125,7 @@ public class QueryParameter extends HashMap<String, Object> {
         Boolean pageFlag = Boolean.FALSE;
         if (this.containsKey(Page.PAGE_SIZE_PARAM_NAME)) {
             Object pageSizeObj = this.get(Page.PAGE_SIZE_PARAM_NAME);
-            if (pageSizeObj != null && pageSizeObj instanceof Integer) {
+            if (pageSizeObj instanceof Integer) {
                 pageFlag = Boolean.TRUE;
             }
         }

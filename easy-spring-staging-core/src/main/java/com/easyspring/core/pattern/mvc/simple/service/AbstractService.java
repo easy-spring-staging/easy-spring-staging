@@ -138,7 +138,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
    * @author caobaoyu
    * @date 2023/4/14 17:12
    */
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   private void queryDetailsExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends QueryDetailsExecutor> clazz, K k,M m, QueryDetailsExecutor<K, M>... executors) throws Exception {
     if (executors != null) {
       for (QueryDetailsExecutor<K, M> executor : executors) {
@@ -163,7 +163,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
    * @author caobaoyu
    * @date 2023/4/14 17:36
    */
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   private void queryPageExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends QueryPageExecutor> clazz, QueryParameter q, Page<M> p, QueryPageExecutor<K, M>... executors) throws Exception {
     if (executors != null) {
       for (QueryPageExecutor<K, M> executor : executors) {
@@ -187,7 +187,6 @@ public abstract class AbstractService<K, M extends Model<K>> {
    * @author caobaoyu
    * @date 2023/4/14 18:02
    */
-  //@SuppressWarnings("unchecked")
   private void addExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends AddExecutor> clazz, K k, M m, AddExecutor<K, M>... executors) throws Exception {
     if (executors != null) {
       for (AddExecutor<K, M> executor : executors) {
@@ -210,7 +209,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
    * @author caobaoyu
    * @date 2022/10/02 14:07
    */
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   private void removeExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends RemoveExecutor> clazz, K k, RemoveExecutor<K>... executors) throws Exception {
     if (executors != null) {
       for (RemoveExecutor<K> executor : executors) {
@@ -233,7 +232,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
    * @author caobaoyu
    * @date 2022/10/02 14:08
    */
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   private void removeMultiExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends RemoveMultiExecutor> clazz, List<K> ks, RemoveMultiExecutor<K>... executors) throws Exception {
     if (executors != null) {
       for (RemoveMultiExecutor<K> executor : executors) {
@@ -256,7 +255,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
    * @author caobaoyu
    * @date 2022/10/02 14:08
    */
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   private void editExecute(Class<? extends EditExecutor> clazz, K k, AuthorizationUser<?, ?, ?, ?> u, M m, EditExecutor<K, M>... executors) throws Exception {
     if (executors != null) {
       for (EditExecutor<K, M> executor : executors) {
@@ -280,7 +279,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
    * @author caobaoyu
    * @date 2022/10/02 14:09
    */
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   private void editAllExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends EditAllExecutor> clazz, K k, M m, EditAllExecutor<K, M>... executors) throws Exception {
     if (executors != null) {
       for (EditAllExecutor<K, M> executor : executors) {
@@ -291,7 +290,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
     }
   }
 
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   @Transactional(readOnly = true)
   public M queryDetails(AuthorizationUser<?, ?, ?, ?> u, K k, QueryDetailsExecutor<K, M>... executors) throws Exception {
     M m;
@@ -301,7 +300,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
     return m;
   }
 
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   @Transactional(readOnly = true)
   public Page<M> queryPage(AuthorizationUser<?, ?, ?, ?> u, QueryParameter q, QueryPageExecutor<K, M>... executors) throws Exception {
     Page<M> page;
@@ -330,7 +329,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
     return getDao().count(u,q);
   }
 
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
   public K add(AuthorizationUser<?, ?, ?, ?> u, M m, AddExecutor<K, M>... executors) throws Exception {
     K k = null;
@@ -342,7 +341,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
     return k;
   }
 
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
   public Boolean remove(AuthorizationUser<?, ?, ?, ?> u, K k, RemoveExecutor<K>... executors) throws Exception {
     boolean result = false;
@@ -355,7 +354,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
     return result;
   }
 
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
   public Integer removeMulti(AuthorizationUser<?, ?, ?, ?> u, List<K> ks, RemoveMultiExecutor<K>... executors) throws Exception {
     Integer count;
@@ -366,7 +365,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
   }
 
 
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
   public Boolean edit(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditExecutor<K, M>... executors) throws Exception {
     boolean result = false;
@@ -379,7 +378,7 @@ public abstract class AbstractService<K, M extends Model<K>> {
     return result;
   }
 
-  //@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
   public Boolean editAll(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditAllExecutor<K, M>... executors) throws Exception {
     boolean result = false;

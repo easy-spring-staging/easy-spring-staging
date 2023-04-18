@@ -31,7 +31,7 @@ public interface ControllerConverter<K, DV extends AbstractDetailVO<K>, LV exten
         Page<LV> pl = null;
         if(dto!=null){
             List<LV> pageList = dtoToLv(dto.getList());
-            pl = new Page<LV>(dto, pageList);
+            pl = new Page<>(dto, pageList);
         }
         return pl;
     }

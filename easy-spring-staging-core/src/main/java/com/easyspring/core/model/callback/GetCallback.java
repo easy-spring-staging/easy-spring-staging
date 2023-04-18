@@ -9,6 +9,6 @@ import com.easyspring.core.model.Model;
  * @param <R> 返回值类型
  */
 @FunctionalInterface
-public interface GetCallback<M extends Model, R> {
+public interface GetCallback<M extends Model<?>, R> {
     R get(M m);
 }

@@ -33,7 +33,7 @@ public class ResponseModel<D> implements Serializable {
      * @date 2020/3/20 16:32
      */
     public static <D> ResponseModel<D> success(D d) {
-        return new ResponseModel(ResponseCode.OK.getCode(), ResponseCode.OK.getMessage(), d);
+        return new ResponseModel<>(ResponseCode.OK.getCode(), ResponseCode.OK.getMessage(), d);
     }
 
     /**
@@ -47,7 +47,7 @@ public class ResponseModel<D> implements Serializable {
      * @date 2020/3/20 16:34
      */
     public static <D> ResponseModel<D> fail(ResponseCode responseCode, D d) {
-        return new ResponseModel(responseCode.getCode(), responseCode.getMessage(), d);
+        return new ResponseModel<>(responseCode.getCode(), responseCode.getMessage(), d);
     }
 
     /**
@@ -60,7 +60,7 @@ public class ResponseModel<D> implements Serializable {
      * @return 响应模型
      */
     public static <D> ResponseModel<D> create(Integer code, String message, D d) {
-        return new ResponseModel(code, message, d);
+        return new ResponseModel<>(code, message, d);
     }
 
     /**

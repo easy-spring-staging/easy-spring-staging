@@ -290,77 +290,90 @@ public abstract class AbstractService<K, M extends AbstractDTO<K>, P extends Abs
         return result;
     }
 
-    /**
-     * 两个模型List一对一关联
-     *
-     * @param list1             左侧List
-     * @param list2             右侧List
-     * @param getKeyCallback1   左侧List模型获取关联字段回调
-     * @param getKeyCallback2   右侧List模型获取关联字段回调
-     * @param setValueCallback1 将右侧关联模型赋值给左侧模型的赋值回调
-     * @param <MK>              关联字段类型
-     * @param <M1>              左侧List模型类型
-     * @param <M2>              右侧List模型类型
-     * @author caobaoyu
-     * @date 2022/10/02 14:18
-     */
-    protected static <MK, M1 extends Model<MK>, M2 extends Model> void joinOne(List<M1> list1, List<M2> list2, GetCallback<M1, MK> getKeyCallback1, GetCallback<M2, MK> getKeyCallback2, SetCallback<M1, M2> setValueCallback1) {
-        if (list1 != null && list2 != null) {
-            Map<MK, M2> map2 = list2.stream().collect(Collectors.toMap(getKeyCallback2::get, t -> t));
-            for (M1 m1 : list1) {
-                MK key = getKeyCallback1.get(m1);
-                M2 m2 = map2.get(key);
-                if (m2 != null) {
-                    setValueCallback1.set(m1, m2);
-                }
-            }
-        }
-    }
+
 
     /**
-     * 两个模型List一对多关联
-     *
-     * @param list1             左侧List
-     * @param list2             右侧List
-     * @param getKeyCallback1   左侧List模型获取关联字段回调
-     * @param getKeyCallback2   右侧List模型获取关联字段回调
-     * @param setValueCallback1 将右侧关联模型List赋值给左侧模型的赋值回调
-     * @param <MK>              关联字段类型
-     * @param <M1>              左侧List模型类型
-     * @param <M2>              右侧List模型类型
-     * @author caobaoyu
-     * @date 2022/10/02 14:20
-     */
-    protected static <MK, M1 extends Model<MK>, M2 extends Model> void joinMany(List<M1> list1, List<M2> list2, GetCallback<M1, MK> getKeyCallback1, GetCallback<M2, MK> getKeyCallback2, SetCallback<M1, List<M2>> setValueCallback1) {
-        if (list1 != null && list2 != null) {
-            Map<MK, List<M2>> map2 = list2.stream().collect(Collectors.groupingBy(getKeyCallback2::get));
-            for (M1 m1 : list1) {
-                MK key = getKeyCallback1.get(m1);
-                List<M2> m2List = map2.get(key);
-                if (m2List != null) {
-                    setValueCallback1.set(m1, m2List);
-                }
-            }
-        }
-    }
-
-    /**
-     * 获取分析模型的主键列表
-     *
      * @param p 分页模型
-     * @return 主键列表
+     * @param getCallback 获取属性回调
+     * @return 属性列表
+     * @param <R> 返回值类型
+     * @param <M> 模型类型
+     *
      * @author caobaoyu
-     * @date 2022/10/02 14:21
+     * @date 2023/4/14 16:23
      */
-    protected List<K> getModelKeyList(Page<M> p) {
-        List<K> keys = null;
+    protected static <R, M extends Model<?>> List<R> getModelPropertyList(Page<M> p, GetCallback<M, R> getCallback) {
+        List<R> keys = null;
         if (p != null && p.getList() != null && p.getList().size() > 0) {
-            List<K> keyList = p.getList().stream().map(Model::getKey).filter(Objects::nonNull).collect(Collectors.toList());
+            List<R> keyList = p.getList().stream().map(getCallback::get).filter(Objects::nonNull).collect(Collectors.toList());
             if (keyList.size() > 0) {
                 keys = keyList;
             }
         }
         return keys;
     }
+
+
+    /**
+     * 两个List一对一关联
+     *
+     * @param list1 list1
+     * @param list2 list2
+     * @param getCall1 获取list1的关联属性回调
+     * @param getCall2 获取list2的关联属性回调
+     * @param setCall 关联赋值回调
+     * @param <P1> list1关联属性的类型
+     * @param <P2> list2关联属性的类型
+     * @param <M1> list1元素类型
+     * @param <M2> list2元素类型
+     *
+     * @author caobaoyu
+     * @date 2023/4/14 16:42
+     */
+    protected static <P1, P2, M1 extends Model<?>, M2 extends Model<?>> void joinOne(List<M1> list1, List<M2> list2, GetCallback<M1, P1> getCall1, GetCallback<M2, P2> getCall2, SetCallback<M1, M2> setCall) {
+        if (list1 != null && list2 != null) {
+            Map<P2, M2> map2 = list2.stream().collect(Collectors.toMap(getCall2::get, t -> t));
+            list1.forEach(e -> {
+                        P1 p = getCall1.get(e);
+                        M2 m2 = map2.get(p);
+                        if (m2 != null) {
+                            setCall.set(e, m2);
+                        }
+                    }
+            );
+        }
+    }
+
+
+    /**
+     * 两个ist一对多关联
+     *
+     * @param list1 list1
+     * @param list2 list2
+     * @param getCall1 获取list1的关联属性回调
+     * @param getCall2 获取list2的关联属性回调
+     * @param setCall 关联赋值回调
+     * @param <P1> list1关联属性的类型
+     * @param <P2> list2关联属性的类型
+     * @param <M1> list1元素类型
+     * @param <M2> list2元素类型
+     *
+     * @author caobaoyu
+     * @date 2023/4/14 17:00
+     */
+    protected static <P1, P2, M1 extends Model<?>, M2 extends Model<?>> void joinMany(List<M1> list1, List<M2> list2, GetCallback<M1, P1> getCall1, GetCallback<M2, P2> getCall2, SetCallback<M1, List<M2>> setCall) {
+        if (list1 != null && list2 != null) {
+            Map<P2, List<M2>> map2 = list2.stream().collect(Collectors.groupingBy(getCall2::get));
+            list1.forEach(e -> {
+                        P1 p = getCall1.get(e);
+                        List<M2> m2List = map2.get(p);
+                        if (m2List != null) {
+                            setCall.set(e, m2List);
+                        }
+                    }
+            );
+        }
+    }
+
 }
 

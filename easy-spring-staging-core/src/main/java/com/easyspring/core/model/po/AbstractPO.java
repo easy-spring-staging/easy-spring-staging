@@ -25,17 +25,15 @@ public abstract class AbstractPO<K> implements Model<K> {
      *
      * @param fieldName 属性字段名称
      * @param value     属性字段值
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
+     * @throws NoSuchFieldException 异常
+     * @throws IllegalAccessException 异常
      * @author caobaoyu
      * @date 2022/10/1 23:17
      */
     protected void assignment(String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
         Field field = this.getClass().getDeclaredField(fieldName);
-        if (field != null) {
-            field.setAccessible(true);
-            field.set(this, value);
-        }
+        field.setAccessible(true);
+        field.set(this, value);
     }
 
     /**

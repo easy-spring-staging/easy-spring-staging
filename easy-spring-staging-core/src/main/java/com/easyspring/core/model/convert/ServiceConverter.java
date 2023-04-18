@@ -13,7 +13,7 @@ import java.util.List;
  * 抽象转换器接口.
  *
  * @author caobaoyu
- * @create 2021-09-04 16:16
+ * @date 2021-09-04 16:16
  **/
 public interface ServiceConverter<K, M extends AbstractDTO<K>, P extends AbstractPO<K>>{
     M poToDto(P p);

@@ -10,6 +10,6 @@ import com.easyspring.core.model.Model;
  * @param <V> 赋值类型
  */
 @FunctionalInterface
-public interface SetCallback<M extends Model, V> {
+public interface SetCallback<M extends Model<?>, V> {
     void set(M m, V v);
 }
