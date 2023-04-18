@@ -20,7 +20,7 @@ import java.util.List;
  * swagger抽象配置类.
  *
  * @author caobaoyu
- * @create 2021-09-10 9:56
+ * @date 2021-09-10 9:56
  **/
 public abstract class AbstractSwaggerConfiguration implements WebMvcConfigurer {
 
@@ -32,7 +32,6 @@ public abstract class AbstractSwaggerConfiguration implements WebMvcConfigurer {
      * @param version             版本表
      * @param globalParameterList 自定义全局参数列表
      * @return springfox.documentation.spring.web.plugins.Docket Docket
-     * @Exception
      * @author caobaoyu
      * @date 2021/9/10 14:58
      */
@@ -64,7 +63,6 @@ public abstract class AbstractSwaggerConfiguration implements WebMvcConfigurer {
      * @param version             版本表
      * @param globalParameterList 自定义全局参数列表
      * @return springfox.documentation.spring.web.plugins.Docket Docket
-     * @Exception
      * @author caobaoyu
      * @date 2021/9/10 14:58
      */
@@ -99,7 +97,6 @@ public abstract class AbstractSwaggerConfiguration implements WebMvcConfigurer {
      * @param dataType      数据类型
      * @param parameterType 参数类型
      * @return springfox.documentation.service.Parameter Parameter
-     * @Exception
      * @author caobaoyu
      * @date 2021/9/10 15:01
      */
@@ -166,7 +163,7 @@ public abstract class AbstractSwaggerConfiguration implements WebMvcConfigurer {
     /**
      * 配置swagger资源路径,解决throw-exception-if-no-handler-found为true时,无法访问swagger资源
      *
-     * @param registry
+     * @param registry 注册资源
      * @author caobaoyu
      * @date 2021/9/10 15:09
      */

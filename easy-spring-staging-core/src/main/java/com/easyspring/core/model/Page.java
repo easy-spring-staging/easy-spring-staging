@@ -28,7 +28,7 @@ import java.util.Map;
 @ApiModel(value = "PageModel", description = "分页")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
-public class Page<M> {
+public class Page<M extends Model> {
 
     // 每页大小参数名称
     public static final String PAGE_SIZE_PARAM_NAME = "pageSize";
@@ -183,5 +183,6 @@ public class Page<M> {
             return pageSize;
         }
     }
+
 
 }

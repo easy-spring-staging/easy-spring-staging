@@ -34,6 +34,6 @@ public interface ControllerConverter<K, DV extends AbstractDetailVO<K>, LV exten
             pl = new Page<LV>(dto, pageList);
         }
         return pl;
-    };
+    }
 
 }

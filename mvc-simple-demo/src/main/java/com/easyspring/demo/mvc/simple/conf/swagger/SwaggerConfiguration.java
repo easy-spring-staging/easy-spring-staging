@@ -12,13 +12,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfiguration extends AbstractSwaggerConfiguration {
     @Bean
     public Docket creatDocket() {
-        Docket docket = createDocket(
+        return createDocket(
                 "mvc简单模式演示",
                 "com.easyspring.demo.mvc.simple.modules",
                 "1.0-SNAPSHOT",
                 null
         );
-        return docket;
     }
 }
 

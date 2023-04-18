@@ -69,6 +69,7 @@ public class QueryParameter extends HashMap<String, Object> {
      * @author caobaoyu
      * @date 2020/5/15 15:10
      */
+    @JsonIgnore
     public void sort(Map<String, String> columnMap) {
         StringBuffer sortBuffer = new StringBuffer();
         String sortExpression = null;
@@ -119,6 +120,7 @@ public class QueryParameter extends HashMap<String, Object> {
      * @author caobaoyu
      * @date 2020/5/15 15:10
      */
+    @JsonIgnore
     public Boolean isPage() {
         Boolean pageFlag = Boolean.FALSE;
         if (this.containsKey(Page.PAGE_SIZE_PARAM_NAME)) {

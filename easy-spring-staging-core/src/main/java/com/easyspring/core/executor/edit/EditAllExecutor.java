@@ -12,5 +12,5 @@ import com.easyspring.core.sercurity.AuthorizationUser;
  * @date 2022/10/1 23:00
  */
 public interface EditAllExecutor<K, M extends Model<K>> {
-    void execute(K k, AuthorizationUser u, M m);
+    void execute(K k, AuthorizationUser<?, ?, ?, ?> u, M m) throws Exception;
 }

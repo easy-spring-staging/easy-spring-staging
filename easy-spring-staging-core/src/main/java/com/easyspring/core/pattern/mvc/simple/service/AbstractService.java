@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -33,350 +34,361 @@ import java.util.stream.Collectors;
  * @author caobaoyu
  * @date 2020/5/15 15:46
  */
-public abstract class AbstractService<K, M extends Model<K>>{
+public abstract class AbstractService<K, M extends Model<K>> {
 
-    public abstract BaseDao<K, M> getDao();
 
-    /**
-     * 执行查询详情执行执行器
-     *
-     * @param clazz     执行器类型
-     * @param k         模型主键
-     * @param u         用户
-     * @param m         模型
-     * @param executors 执行器列表
-     * @throws Exception
-     * @author caobaoyu
-     * @date 2022/10/02 14:02
-     */
-    private void queryDetailsExecute(Class<? extends QueryDetailsExecutor> clazz, K k, AuthorizationUser u, M m, QueryDetailsExecutor<K, M>... executors) throws Exception {
-        if (executors == null) {
-            for (QueryDetailsExecutor<K, M> executor : executors) {
-                if (executor != null && QueryDetailsExecutor.class == executor.getClass().getInterfaces()[0]) {
-                    throw new Exception("执行器不能空，且不能执行QueryDetailsExecutor,请使用QueryDetailsExecutor的子接口！");
-                } else {
-                    if (clazz.isInstance(executor)) {
-                        executor.execute(k, u, m);
-                    }
-                }
-            }
-        }
+
+  /**
+   * @param p 分页模型
+   * @param getCallback 获取属性回调
+   * @return 属性列表
+   * @param <R> 返回值类型
+   * @param <M> 模型类型
+   *
+   * @author caobaoyu
+   * @date 2023/4/14 16:23
+   */
+  protected static <R, M extends Model<?>> List<R> getModelPropertyList(Page<M> p, GetCallback<M, R> getCallback) {
+    List<R> keys = null;
+    if (p != null && p.getList() != null && p.getList().size() > 0) {
+      List<R> keyList = p.getList().stream().map(getCallback::get).filter(Objects::nonNull).collect(Collectors.toList());
+      if (keyList.size() > 0) {
+        keys = keyList;
+      }
     }
+    return keys;
+  }
 
-    @Transactional(readOnly = true)
-    public M queryDetails(K k, AuthorizationUser u, QueryDetailsExecutor<K, M>... executors) throws Exception {
-        M m = null;
-        queryDetailsExecute(QueryDetailsPerExecutor.class, k, u, m, executors);
-        m = getDao().load(k, u);
-        queryDetailsExecute(QueryDetailsPostExecutor.class, k, u, m, executors);
-        return m;
-    }
 
-    /**
-     * 执行查询列表执行执行器
-     *
-     * @param clazz     执行器类型
-     * @param q         查询参数模型
-     * @param u         用户
-     * @param p         分页模型
-     * @param executors
-     * @throws Exception
-     * @author caobaoyu
-     * @date 2022/10/02 14:04
-     */
-    private void queryPageExecute(Class<? extends QueryPageExecutor> clazz, QueryParameter q, AuthorizationUser u, Page<M> p, QueryPageExecutor<K, M>... executors) throws Exception {
-        if (executors != null) {
-            for (QueryPageExecutor<K, M> executor : executors) {
-                if (executor == null && QueryPageExecutor.class == executor.getClass().getInterfaces()[0]) {
-                    throw new Exception("执行器不能空，且不能执行QueryPageExecutor,请使用QueryPageExecutor的子接口！");
-                } else {
-                    if (clazz.isInstance(executor)) {
-                        executor.execute(q, u, p);
-                    }
-                }
-            }
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public Page<M> queryPage(QueryParameter q, AuthorizationUser u, QueryPageExecutor<K, M>... executors) throws Exception {
-        Page page = null;
-        q.initPage();
-        queryPageExecute(QueryPagePerExecutor.class, q, u, page, executors);
-        if (q.isPage()) {
-            com.github.pagehelper.Page<M> pageHelperPage = PageHelper.startPage(q.getPageModel().getPageNum(), q.getPageModel().getPageSize()).doSelectPage(() -> getDao().query(q, u));
-            page = new Page(pageHelperPage);
-        } else {
-            List<M> list = getDao().query(q, u);
-            page = new Page(list);
-        }
-        queryPageExecute(QueryPagePostExecutor.class, q, u, page, executors);
-        return page;
-    }
-
-    @Transactional(readOnly = true)
-    public List<M> queryList(String fn, List<? extends Object> ks, AuthorizationUser u) throws Exception {
-        List<M> dataList = null;
-        dataList = getDao().list(fn, ks, u);
-        return dataList;
-    }
-
-    @Transactional(readOnly = true)
-    public Integer count(QueryParameter q, AuthorizationUser u) throws Exception {
-        return getDao().count(q, u);
-    }
-
-    /**
-     * 执行新增执行执行器
-     *
-     * @param clazz     执行器类型
-     * @param k         模型主键
-     * @param u         用户
-     * @param m         模型
-     * @param executors 执行器列表
-     * @throws Exception
-     * @author caobaoyu
-     * @date 2022/10/02 14:06
-     */
-    private void addExecute(Class<? extends AddExecutor> clazz, K k, AuthorizationUser u, M m, AddExecutor<K, M>... executors) throws Exception {
-        if (executors != null) {
-            for (AddExecutor<K, M> executor : executors) {
-                if (executor == null && AddExecutor.class == executor.getClass().getInterfaces()[0]) {
-                    throw new Exception("执行器不能空，且不能执行AddExecutor,请使用AddExecutor的子接口！");
-                } else {
-                    if (clazz.isInstance(executor)) {
-                        executor.execute(k, u, m);
-                    }
-                }
-            }
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public K add(M m, AuthorizationUser u, AddExecutor<K, M>... executors) throws Exception {
-        K k = null;
-        addExecute(AddPerExecutor.class, k, u, m, executors);
-        if (getDao().insert(m) > 0) {
-            k = m.getKey();
-        }
-        addExecute(AddPostExecutor.class, k, u, m, executors);
-        return k;
-    }
-
-    /**
-     * 执行单删除执行执行器
-     *
-     * @param clazz     执行器类型
-     * @param k         模型主键
-     * @param u         用户
-     * @param executors 执行器列表
-     * @throws Exception
-     * @author caobaoyu
-     * @date 2022/10/02 14:07
-     */
-    private void removeExecute(Class<? extends RemoveExecutor> clazz, K k, AuthorizationUser u, RemoveExecutor<K>... executors) throws Exception {
-        if (executors != null) {
-            for (RemoveExecutor<K> executor : executors) {
-                if (executor == null && RemoveExecutor.class == executor.getClass().getInterfaces()[0]) {
-                    throw new Exception("执行器不能空，且不能执行RemoveExecutor,请使用RemoveExecutor的子接口！");
-                } else {
-                    if (clazz.isInstance(executor)) {
-                        executor.execute(k, u);
-                    }
-                }
-            }
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public Boolean remove(K k, AuthorizationUser u, RemoveExecutor<K>... executors) throws Exception {
-        Boolean result = false;
-        removeExecute(RemovePerExecutor.class, k, u, executors);
-        int count = getDao().delete(k, u);
-        if (count > 0) {
-            result = true;
-        }
-        removeExecute(RemovePostExecutor.class, k, u, executors);
-        return result;
-    }
-
-    /**
-     * 执行多删除执行执行器
-     *
-     * @param clazz     执行器类型
-     * @param ks        模型主键列表
-     * @param u         用户
-     * @param executors 执行器列表
-     * @throws Exception
-     * @author caobaoyu
-     * @date 2022/10/02 14:08
-     */
-    private void removeMultiExecute(Class<? extends RemoveMultiExecutor> clazz, List<K> ks, AuthorizationUser u, RemoveMultiExecutor<K>... executors) throws Exception {
-        if (executors != null) {
-            for (RemoveMultiExecutor<K> executor : executors) {
-                if (executor == null && RemoveMultiExecutor.class == executor.getClass().getInterfaces()[0]) {
-                    throw new Exception("执行器不能空，且不能执行RemoveMultiExecutor,请使用RemoveMultiExecutor的子接口！");
-                } else {
-                    if (clazz.isInstance(executor)) {
-                        executor.execute(ks, u);
-                    }
-                }
-            }
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public Integer removeMulti(List<K> ks, AuthorizationUser u, RemoveMultiExecutor<K>... executors) throws Exception {
-        Integer count = 0;
-        removeMultiExecute(RemoveMultiPerExecutor.class, ks, u, executors);
-        count = getDao().deleteMulti(ks, u);
-        removeMultiExecute(RemoveMultiPostExecutor.class, ks, u, executors);
-        return count;
-    }
-
-    /**
-     * 执行部分修改执行执行器
-     *
-     * @param clazz     执行器类型
-     * @param k         模型主键
-     * @param u         用户
-     * @param m         模型
-     * @param executors 执行器列表
-     * @throws Exception
-     * @author caobaoyu
-     * @date 2022/10/02 14:08
-     */
-    private void editExecute(Class<? extends EditExecutor> clazz, K k, AuthorizationUser u, M m, EditExecutor<K, M>... executors) throws Exception {
-        if (executors != null) {
-            for (EditExecutor<K, M> executor : executors) {
-                if (executor == null && EditExecutor.class == executor.getClass().getInterfaces()[0]) {
-                    throw new Exception("执行器不能空，且不能执行EditExecutor,请使用EditExecutor的子接口！");
-                } else {
-                    if (clazz.isInstance(executor)) {
-                        executor.execute(k, u, m);
-                    }
-                }
-            }
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public Boolean edit(K k, M m, AuthorizationUser u, EditExecutor<K, M>... executors) throws Exception {
-        Boolean result = false;
-        editExecute(EditPerExecutor.class, k, u, m, executors);
-        int count = getDao().update(k, m, u);
-        if (count > 0) {
-            result = true;
-        }
-        editExecute(EditPostExecutor.class, k, u, m, executors);
-        return result;
-    }
-
-    /**
-     * 执行全部修改执行执行器
-     *
-     * @param clazz     执行器类型
-     * @param k         模型主键
-     * @param u         用户
-     * @param m         模型
-     * @param executors 执行器列表
-     * @throws Exception
-     * @author caobaoyu
-     * @date 2022/10/02 14:09
-     */
-    private void editAllExecute(Class<? extends EditAllExecutor> clazz, K k, AuthorizationUser u, M m, EditAllExecutor<K, M>... executors) throws Exception {
-        if (executors != null) {
-            for (EditAllExecutor<K, M> executor : executors) {
-                if (executor == null && EditAllExecutor.class == executor.getClass().getInterfaces()[0]) {
-                    throw new Exception("执行器不能空，且不能执行EditAllExecutor,请使用EditAllExecutor的子接口！");
-                } else {
-                    if (clazz.isInstance(executor)) {
-                        executor.execute(k, u, m);
-                    }
-                }
-            }
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public Boolean editAll(K k, M m, AuthorizationUser u, EditAllExecutor<K, M>... executors) throws Exception {
-        Boolean result = false;
-        editAllExecute(EditAllPerExecutor.class, k, u, m, executors);
-        result = getDao().updateAll(k, m, u);
-        editAllExecute(EditAllPostExecutor.class, k, u, m, executors);
-        return result;
-    }
-
-    /**
-     * 两个模型List一对一关联
-     *
-     * @param list1             左侧List
-     * @param list2             右侧List
-     * @param getKeyCallback1   左侧List模型获取关联字段回调
-     * @param getKeyCallback2   右侧List模型获取关联字段回调
-     * @param setValueCallback1 将右侧关联模型赋值给左侧模型的赋值回调
-     * @param <MK>              关联字段类型
-     * @param <M1>              左侧List模型类型
-     * @param <M2>              右侧List模型类型
-     * @author caobaoyu
-     * @date 2022/10/02 14:18
-     */
-    protected static <MK, M1 extends Model<MK>, M2 extends Model> void joinOne(List<M1> list1, List<M2> list2, GetCallback<M1, MK> getKeyCallback1, GetCallback<M2, MK> getKeyCallback2, SetCallback<M1, M2> setValueCallback1) {
-        if (list1 != null && list2 != null) {
-            Map<MK, M2> map2 = list2.stream().collect(Collectors.toMap(t -> getKeyCallback2.get(t), t -> t));
-            for (M1 m1 : list1) {
-                MK key = getKeyCallback1.get(m1);
-                M2 m2 = map2.get(key);
+  /**
+   * 两个List一对一关联
+   *
+   * @param list1 list1
+   * @param list2 list2
+   * @param getCall1 获取list1的关联属性回调
+   * @param getCall2 获取list2的关联属性回调
+   * @param setCall 关联赋值回调
+   * @param <P1> list1关联属性的类型
+   * @param <P2> list2关联属性的类型
+   * @param <M1> list1元素类型
+   * @param <M2> list2元素类型
+   *
+   * @author caobaoyu
+   * @date 2023/4/14 16:42
+   */
+  protected static <P1, P2, M1 extends Model<?>, M2 extends Model<?>> void joinOne(List<M1> list1, List<M2> list2, GetCallback<M1, P1> getCall1, GetCallback<M2, P2> getCall2, SetCallback<M1, M2> setCall) {
+    if (list1 != null && list2 != null) {
+      Map<P2, M2> map2 = list2.stream().collect(Collectors.toMap(getCall2::get, t -> t));
+      list1.forEach(e -> {
+                P1 p = getCall1.get(e);
+                M2 m2 = map2.get(p);
                 if (m2 != null) {
-                    setValueCallback1.set(m1, m2);
+                  setCall.set(e, m2);
                 }
-            }
-        }
+              }
+      );
     }
+  }
 
-    /**
-     * 两个模型List一对多关联
-     *
-     * @param list1             左侧List
-     * @param list2             右侧List
-     * @param getKeyCallback1   左侧List模型获取关联字段回调
-     * @param getKeyCallback2   右侧List模型获取关联字段回调
-     * @param setValueCallback1 将右侧关联模型List赋值给左侧模型的赋值回调
-     * @param <MK>              关联字段类型
-     * @param <M1>              左侧List模型类型
-     * @param <M2>              右侧List模型类型
-     * @author caobaoyu
-     * @date 2022/10/02 14:20
-     */
-    protected static <MK, M1 extends Model<MK>, M2 extends Model> void joinMany(List<M1> list1, List<M2> list2, GetCallback<M1, MK> getKeyCallback1, GetCallback<M2, MK> getKeyCallback2, SetCallback<M1, List<M2>> setValueCallback1) {
-        if (list1 != null && list2 != null) {
-            Map<MK, List<M2>> map2 = list2.stream().collect(Collectors.groupingBy(t -> getKeyCallback2.get(t)));
-            for (M1 m1 : list1) {
-                MK key = getKeyCallback1.get(m1);
-                List<M2> m2List = map2.get(key);
+
+  /**
+   * 两个ist一对多关联
+   *
+   * @param list1 list1
+   * @param list2 list2
+   * @param getCall1 获取list1的关联属性回调
+   * @param getCall2 获取list2的关联属性回调
+   * @param setCall 关联赋值回调
+   * @param <P1> list1关联属性的类型
+   * @param <P2> list2关联属性的类型
+   * @param <M1> list1元素类型
+   * @param <M2> list2元素类型
+   *
+   * @author caobaoyu
+   * @date 2023/4/14 17:00
+   */
+  protected static <P1, P2, M1 extends Model<?>, M2 extends Model<?>> void joinMany(List<M1> list1, List<M2> list2, GetCallback<M1, P1> getCall1, GetCallback<M2, P2> getCall2, SetCallback<M1, List<M2>> setCall) {
+    if (list1 != null && list2 != null) {
+      Map<P2, List<M2>> map2 = list2.stream().collect(Collectors.groupingBy(getCall2::get));
+      list1.forEach(e -> {
+                P1 p = getCall1.get(e);
+                List<M2> m2List = map2.get(p);
                 if (m2List != null) {
-                    setValueCallback1.set(m1, m2List);
+                  setCall.set(e, m2List);
                 }
-            }
-        }
+              }
+      );
     }
+  }
 
-    /**
-     * 获取分析模型的主键列表
-     *
-     * @param p 分页模型
-     * @return 主键列表
-     * @author caobaoyu
-     * @date 2022/10/02 14:21
-     */
-    protected List<K> getModelKeyList(Page<M> p) {
-        List<K> keys = null;
-        if (p != null && p.getList() != null && p.getList().size() > 0) {
-            List<K> keyList = p.getList().stream().map(e -> e.getKey()).filter(k -> k != null).collect(Collectors.toList());
-            if (keyList != null && keyList.size() > 0) {
-                keys = keyList;
-            }
+
+
+  public abstract BaseDao<K, M> getDao();
+
+  /**
+   * 执行查询详情附加执行器
+   *
+   * @param u 用户
+   * @param clazz 附加执行器类型
+   * @param k 模型主键
+   * @param m 模型
+   * @param executors 附加执行器列表
+   * @throws Exception 异常
+   *
+   * @author caobaoyu
+   * @date 2023/4/14 17:12
+   */
+  //@SuppressWarnings("unchecked")
+  private void queryDetailsExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends QueryDetailsExecutor> clazz, K k,M m, QueryDetailsExecutor<K, M>... executors) throws Exception {
+    if (executors != null) {
+      for (QueryDetailsExecutor<K, M> executor : executors) {
+        if (clazz.isInstance(executor)) {
+          executor.execute(u, k, m);
         }
-        return keys;
+      }
     }
+  }
+
+
+  /**
+   * 执行查询列表附加执行器
+   *
+   * @param u 用户
+   * @param clazz 附加执行器类型
+   * @param q 查询参数模型
+   * @param p 分页模型
+   * @param executors 附加执行器列表
+   * @throws Exception 异常
+   *
+   * @author caobaoyu
+   * @date 2023/4/14 17:36
+   */
+  //@SuppressWarnings("unchecked")
+  private void queryPageExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends QueryPageExecutor> clazz, QueryParameter q, Page<M> p, QueryPageExecutor<K, M>... executors) throws Exception {
+    if (executors != null) {
+      for (QueryPageExecutor<K, M> executor : executors) {
+        if (clazz.isInstance(executor)) {
+          executor.execute(u, q, p);
+        }
+      }
+    }
+  }
+
+  /**
+   * 执行添加附加执行器
+   *
+   * @param u 用户
+   * @param clazz 附加执行器类型
+   * @param k 模型主键
+   * @param m 模型
+   * @param executors 附加执行器
+   * @throws Exception 异常
+   *
+   * @author caobaoyu
+   * @date 2023/4/14 18:02
+   */
+  //@SuppressWarnings("unchecked")
+  private void addExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends AddExecutor> clazz, K k, M m, AddExecutor<K, M>... executors) throws Exception {
+    if (executors != null) {
+      for (AddExecutor<K, M> executor : executors) {
+        if (clazz.isInstance(executor)) {
+          executor.execute(u, k, m);
+        }
+      }
+    }
+  }
+
+
+  /**
+   *  执行删除附加执行器
+   *
+   * @param u 用户
+   * @param clazz 执行器类型
+   * @param k 模型主键
+   * @param executors 执行器列表
+   * @throws Exception 异常
+   * @author caobaoyu
+   * @date 2022/10/02 14:07
+   */
+  //@SuppressWarnings("unchecked")
+  private void removeExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends RemoveExecutor> clazz, K k, RemoveExecutor<K>... executors) throws Exception {
+    if (executors != null) {
+      for (RemoveExecutor<K> executor : executors) {
+        if (clazz.isInstance(executor)) {
+          executor.execute(u, k);
+        }
+      }
+    }
+  }
+
+
+  /**
+   * 执行多删除执行执行器
+   *
+   * @param clazz     执行器类型
+   * @param ks        模型主键列表
+   * @param u         用户
+   * @param executors 执行器列表
+   * @throws Exception 异常
+   * @author caobaoyu
+   * @date 2022/10/02 14:08
+   */
+  //@SuppressWarnings("unchecked")
+  private void removeMultiExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends RemoveMultiExecutor> clazz, List<K> ks, RemoveMultiExecutor<K>... executors) throws Exception {
+    if (executors != null) {
+      for (RemoveMultiExecutor<K> executor : executors) {
+        if (clazz.isInstance(executor)) {
+          executor.execute(u, ks);
+        }
+      }
+    }
+  }
+
+  /**
+   * 执行部分修改执行执行器
+   *
+   * @param clazz     执行器类型
+   * @param k         模型主键
+   * @param u         用户
+   * @param m         模型
+   * @param executors 执行器列表
+   * @throws Exception 异常
+   * @author caobaoyu
+   * @date 2022/10/02 14:08
+   */
+  //@SuppressWarnings("unchecked")
+  private void editExecute(Class<? extends EditExecutor> clazz, K k, AuthorizationUser<?, ?, ?, ?> u, M m, EditExecutor<K, M>... executors) throws Exception {
+    if (executors != null) {
+      for (EditExecutor<K, M> executor : executors) {
+        if (clazz.isInstance(executor)) {
+          executor.execute(u,k,  m);
+        }
+      }
+    }
+  }
+
+
+  /**
+   * 执行全部修改执行执行器
+   *
+   * @param clazz     执行器类型
+   * @param k         模型主键
+   * @param u         用户
+   * @param m         模型
+   * @param executors 执行器列表
+   * @throws Exception 异常
+   * @author caobaoyu
+   * @date 2022/10/02 14:09
+   */
+  //@SuppressWarnings("unchecked")
+  private void editAllExecute(AuthorizationUser<?, ?, ?, ?> u, Class<? extends EditAllExecutor> clazz, K k, M m, EditAllExecutor<K, M>... executors) throws Exception {
+    if (executors != null) {
+      for (EditAllExecutor<K, M> executor : executors) {
+        if (clazz.isInstance(executor)) {
+          executor.execute(k, u, m);
+        }
+      }
+    }
+  }
+
+  //@SuppressWarnings("unchecked")
+  @Transactional(readOnly = true)
+  public M queryDetails(AuthorizationUser<?, ?, ?, ?> u, K k, QueryDetailsExecutor<K, M>... executors) throws Exception {
+    M m;
+    queryDetailsExecute(u, QueryDetailsPerExecutor.class, k, null, executors);
+    m = getDao().load(k, u);
+    queryDetailsExecute(u, QueryDetailsPostExecutor.class, k, m, executors);
+    return m;
+  }
+
+  //@SuppressWarnings("unchecked")
+  @Transactional(readOnly = true)
+  public Page<M> queryPage(AuthorizationUser<?, ?, ?, ?> u, QueryParameter q, QueryPageExecutor<K, M>... executors) throws Exception {
+    Page<M> page;
+    q.initPage();
+    queryPageExecute(u, QueryPagePerExecutor.class, q, null, executors);
+    if (q.isPage()) {
+      com.github.pagehelper.Page<M> pageHelperPage = PageHelper.startPage(q.getPageModel().getPageNum(), q.getPageModel().getPageSize()).doSelectPage(() -> getDao().query(q, u));
+      page = new Page<>(pageHelperPage);
+    } else {
+      List<M> list = getDao().query(q, u);
+      page = new Page<>(list);
+    }
+    queryPageExecute( u, QueryPagePostExecutor.class, q, page, executors);
+    return page;
+  }
+
+  @Transactional(readOnly = true)
+  public List<M> queryList(AuthorizationUser<?, ?, ?, ?> u,String fn, List<?> ks) throws Exception{
+    List<M> dataList;
+    dataList = getDao().list(u,fn, ks);
+    return dataList;
+  }
+
+  @Transactional(readOnly = true)
+  public Integer count(AuthorizationUser<?, ?, ?, ?> u, QueryParameter q) throws Exception {
+    return getDao().count(u,q);
+  }
+
+  //@SuppressWarnings("unchecked")
+  @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+  public K add(AuthorizationUser<?, ?, ?, ?> u, M m, AddExecutor<K, M>... executors) throws Exception {
+    K k = null;
+    addExecute(u, AddPerExecutor.class, null, m, executors);
+    if (getDao().insert(m) > 0) {
+      k = m.getKey();
+    }
+    addExecute(u, AddPostExecutor.class, k, m, executors);
+    return k;
+  }
+
+  //@SuppressWarnings("unchecked")
+  @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+  public Boolean remove(AuthorizationUser<?, ?, ?, ?> u, K k, RemoveExecutor<K>... executors) throws Exception {
+    boolean result = false;
+    removeExecute(u, RemovePerExecutor.class, k, executors);
+    int count = getDao().delete(k, u);
+    if (count > 0) {
+      result = true;
+    }
+    removeExecute(u, RemovePostExecutor.class, k, executors);
+    return result;
+  }
+
+  //@SuppressWarnings("unchecked")
+  @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+  public Integer removeMulti(AuthorizationUser<?, ?, ?, ?> u, List<K> ks, RemoveMultiExecutor<K>... executors) throws Exception {
+    Integer count;
+    removeMultiExecute(u,RemoveMultiPerExecutor.class, ks,executors);
+    count = getDao().deleteMulti(ks, u);
+    removeMultiExecute(u, RemoveMultiPostExecutor.class, ks,executors);
+    return count;
+  }
+
+
+  //@SuppressWarnings("unchecked")
+  @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+  public Boolean edit(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditExecutor<K, M>... executors) throws Exception {
+    boolean result = false;
+    editExecute(EditPerExecutor.class, k, u, m, executors);
+    int count = getDao().update(k, m, u);
+    if (count > 0) {
+      result = true;
+    }
+    editExecute(EditPostExecutor.class, k, u, m, executors);
+    return result;
+  }
+
+  //@SuppressWarnings("unchecked")
+  @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+  public Boolean editAll(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditAllExecutor<K, M>... executors) throws Exception {
+    boolean result = false;
+    editAllExecute(u, EditAllPerExecutor.class, k, m, executors);
+    int count = getDao().update(k, m, u);
+    if (count > 0) {
+      result = true;
+    }
+    editAllExecute(u, EditAllPostExecutor.class, k, m, executors);
+    return result;
+  }
 }

@@ -9,10 +9,10 @@ package com.easyspring.core.exception;
 public class BusinessException extends Exception {
 
     // 异常码
-    private Integer code;
+    private final Integer code;
 
     // 异常信息
-    private String message;
+    private final String message;
 
     public BusinessException(Integer code, String message) {
         super(message);

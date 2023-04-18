@@ -34,7 +34,7 @@ public interface BaseDao<K, M extends Model<K>> {
      * @author caobaoyu
      * @date 2020/5/15 14:59
      */
-    M load(@Param(value = "k") K k, @Param(value = "u") AuthorizationUser u);
+    M load(@Param(value = "k") K k, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
 
     /**
      * 通过多个条件查询列表
@@ -49,7 +49,7 @@ public interface BaseDao<K, M extends Model<K>> {
      * @author caobaoyu
      * @date 2020/5/15 15:04
      */
-    List<M> query(@Param(value = "q") QueryParameter q, @Param(value = "u") AuthorizationUser u);
+    List<M> query(@Param(value = "q") QueryParameter q, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
 
     /**
      * 通过主键集合查询列表数据 .
@@ -57,27 +57,27 @@ public interface BaseDao<K, M extends Model<K>> {
      * <p>
      * 通过主键集合查询列表数据 .
      *
+     * @param u  用户模型
      * @param fn 字段名称
      * @param ks key数组
-     * @param u  用户模型
      * @return java.util.List<M> 数据List
      * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2020/5/15 15:24
      */
-    List<M> list(@Param(value = "fn") String fn, @Param(value = "ks") List<? extends Object> ks, @Param(value = "u") AuthorizationUser u);
+    List<M> list(@Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "fn") String fn, @Param(value = "ks") List<?> ks) throws Exception;
 
     /**
      * 通过多个条件查询总记录数
      *
-     * @param q 请求参数模型
      * @param u 用户模型
+     * @param q 请求参数模型
      * @return java.lang.Integer 总记录数
-     * @Exception 数据库异常
+     * @throws Exception 数据库异常
      * @author caobaoyu
      * @date 2021/9/4 9:18
      */
-    Integer count(@Param(value = "q") QueryParameter q, @Param(value = "u") AuthorizationUser u) throws Exception;
+    Integer count(@Param(value = "u") AuthorizationUser<?, ?, ?, ?> u, @Param(value = "q") QueryParameter q) throws Exception;
 
     /**
      * 添加数据 .
@@ -106,7 +106,7 @@ public interface BaseDao<K, M extends Model<K>> {
      * @author caobaoyu
      * @date 2020/5/15 15:17
      */
-    Integer delete(@Param(value = "k") K k, @Param(value = "u") AuthorizationUser u);
+    Integer delete(@Param(value = "k") K k, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
 
     /**
      * 通过主键List删除数据 .
@@ -121,7 +121,7 @@ public interface BaseDao<K, M extends Model<K>> {
      * @author caobaoyu
      * @date 2020/5/15 15:24
      */
-    Integer deleteMulti(@Param(value = "ks") List<K> ks, @Param(value = "u") AuthorizationUser u);
+    Integer deleteMulti(@Param(value = "ks") List<K> ks, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
 
     /**
      * 修改数据 .
@@ -137,7 +137,7 @@ public interface BaseDao<K, M extends Model<K>> {
      * @author caobaoyu
      * @date 2020/5/15 15:28
      */
-    Integer update(@Param(value = "k") K k, @Param(value = "m") M m, @Param(value = "u") AuthorizationUser u);
+    Integer update(@Param(value = "k") K k, @Param(value = "m") M m, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
 
     /**
      * 修改数据 .
@@ -153,5 +153,5 @@ public interface BaseDao<K, M extends Model<K>> {
      * @author caobaoyu
      * @date 2020/5/15 15:28
      */
-    Boolean updateAll(@Param(value = "k") K k, @Param(value = "m") M m, @Param(value = "u") AuthorizationUser u);
+    Integer updateAll(@Param(value = "k") K k, @Param(value = "m") M m, @Param(value = "u") AuthorizationUser<?, ?, ?, ?> u);
 }

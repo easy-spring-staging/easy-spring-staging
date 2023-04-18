@@ -12,5 +12,17 @@ import com.easyspring.core.sercurity.AuthorizationUser;
  * @date 2022/10/1 23:02
  */
 public interface EditExecutor<K, M extends Model<K>> {
-    void execute(K k, AuthorizationUser u, M m);
+
+     /**
+     *
+     * 修改附加执行器
+     *
+     * @param u 用户
+     * @param k 模型主键
+     * @param m 模型
+     *
+     * @author caobaoyu
+     * @date 2023/4/17 10:36
+     */
+    void execute(AuthorizationUser<?, ?, ?, ?> u, K k, M m) throws Exception;
 }

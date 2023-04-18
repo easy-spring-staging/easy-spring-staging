@@ -15,5 +15,15 @@ import com.easyspring.core.sercurity.AuthorizationUser;
  */
 @FunctionalInterface
 public interface QueryPageExecutor<K, M extends Model<K>> {
-    void execute(QueryParameter q, AuthorizationUser u, Page<M> p);
+    /**
+     * 查询列表附加执行器
+     *
+     * @param u 用户
+     * @param q 查询参数模型
+     * @param p 分页模型
+     *
+     * @author caobaoyu
+     * @date 2023/4/17 10:00
+     */
+    void execute(AuthorizationUser<?, ?, ?, ?> u, QueryParameter q, Page<M> p) throws Exception;
 }

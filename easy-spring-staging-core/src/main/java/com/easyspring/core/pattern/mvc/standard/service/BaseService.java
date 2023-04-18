@@ -43,7 +43,7 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @author caobaoyu
      * @date 2020/5/15 14:59
      */
-    M queryDetails(K k, AuthorizationUser u, QueryDetailsExecutor<K, M>... executors) throws Exception;
+    M queryDetails(K k, AuthorizationUser<?, ?, ?, ?> u, QueryDetailsExecutor<K, M>... executors) throws Exception;
 
 
     /**
@@ -51,9 +51,9 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @param u         鉴权用户模型
      * @param executors 执行器
      * @return Page<M> 分页数据模型
-     * @throws Exception
+     * @throws Exception 异常
      */
-    Page<M> queryPage(QueryParameter q, AuthorizationUser u, QueryPageExecutor<K, M>... executors) throws Exception;
+    Page<M> queryPage(QueryParameter q, AuthorizationUser<?, ?, ?, ?> u, QueryPageExecutor<K, M>... executors) throws Exception;
 
     /**
      * 通过主键集合查询列表数据  .
@@ -69,7 +69,7 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @author caobaoyu
      * @date 2020/5/15 15:24
      */
-    List<M> queryList(String fn, List<? extends Object> ks, AuthorizationUser u) throws Exception;
+    List<M> queryList(String fn, List<?> ks, AuthorizationUser<?, ?, ?, ?> u) throws Exception;
 
 
     /**
@@ -78,11 +78,11 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @param q 请求参数模型
      * @param u 鉴权用户模型
      * @return java.lang.Integer 总记录数
-     * @Exception 数据库异常
-     * @autho caobaoyu
+     * @throws Exception 数据库异常
+     * @author caobaoyu
      * @date 2021/9/4 9:18
      */
-    Integer count(QueryParameter q, AuthorizationUser u) throws Exception;
+    Integer count(QueryParameter q, AuthorizationUser<?, ?, ?, ?> u) throws Exception;
 
     /**
      * 添加数据 .
@@ -98,7 +98,7 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @author caobaoyu
      * @date 2020/5/15 15:13
      */
-    K add(M m, AuthorizationUser u, AddExecutor<K, M>... executors) throws Exception;
+    K add(M m, AuthorizationUser<?, ?, ?, ?> u, AddExecutor<K, M>... executors) throws Exception;
 
 
     /**
@@ -115,7 +115,7 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @author caobaoyu
      * @date 2020/5/15 15:17
      */
-    Boolean remove(K k, AuthorizationUser u, RemoveExecutor<K>... executors) throws Exception;
+    Boolean remove(K k, AuthorizationUser<?, ?, ?, ?> u, RemoveExecutor<K>... executors) throws Exception;
 
 
     /**
@@ -132,7 +132,7 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @author caobaoyu
      * @date 2020/5/15 15:24
      */
-    Integer removeMulti(List<K> ks, AuthorizationUser u, RemoveMultiExecutor<K>... executors) throws Exception;
+    Integer removeMulti(AuthorizationUser<?, ?, ?, ?> u, List<K> ks, RemoveMultiExecutor<K>... executors) throws Exception;
 
     /**
      * 修改数据 .
@@ -149,7 +149,7 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @author caobaoyu
      * @date 2020/5/15 15:28
      */
-    Boolean edit(K k, M m, AuthorizationUser u, EditExecutor<K, M>... executors) throws Exception;
+    Boolean edit(K k, M m, AuthorizationUser<?, ?, ?, ?> u, EditExecutor<K, M>... executors) throws Exception;
 
     /**
      * 修改数据 .
@@ -166,6 +166,6 @@ public interface BaseService<K, M extends AbstractDTO<K>, P extends AbstractPO<K
      * @author caobaoyu
      * @date 2020/5/15 15:28
      */
-    Boolean editAll(K k, M m, AuthorizationUser u, EditAllExecutor<K, M>... executors) throws Exception;
+    Boolean editAll(AuthorizationUser<?, ?, ?, ?> u, K k, M m, EditAllExecutor<K, M>... executors) throws Exception;
 
 }

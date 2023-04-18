@@ -14,9 +14,9 @@ public enum ResponseCode {
     INTERNAL_SERVER_ERROR(500, "Internal Server Error")
     ;
     // 状态码
-    private Integer code;
+    private final Integer code;
     // 描述信息
-    private String message;
+    private final String message;
     ResponseCode(Integer code, String message){
         this.code = code;
         this.message = message;

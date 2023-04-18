@@ -22,7 +22,7 @@ import java.sql.SQLException;
  * @author caobaoyu
  * @date 2020/10/28 10:36
  */
-public abstract class AbstractTypeHandler<T extends Object> extends BaseTypeHandler<T> {
+public abstract class AbstractTypeHandler<T> extends BaseTypeHandler<T> {
     @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, T t, JdbcType jdbcType) throws SQLException {
         if(t==null){

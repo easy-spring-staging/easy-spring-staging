@@ -26,7 +26,7 @@ public abstract class AbstractAspect {
      *
      * @param joinPoint 连接点
      * @return 目标对象对象返回值
-     * @throws
+     * @throws Throwable 异常
      * @author caobaoyu
      * @date 2018/11/1 12:44
      */
@@ -51,7 +51,7 @@ public abstract class AbstractAspect {
      *
      * @param joinPoint 连接点
      * @return 目标对象对象返回值
-     * @throws Throwable
+     * @throws Throwable 异常
      * @author caobaoyu
      * @date 2018/11/1 12:45
      */
@@ -69,7 +69,7 @@ public abstract class AbstractAspect {
      * 切面前置处理
      *
      * @param req HttpServletRequest
-     * @throws Throwable
+     * @throws Throwable 异常
      * @author caobaoyu
      * @date 2018/11/1 12:50
      */
@@ -82,7 +82,7 @@ public abstract class AbstractAspect {
      * @param endTime   执行结束时间(时间戳，毫秒)
      * @param result    目标对象对象返回值
      * @param req       HttpServletRequest
-     * @throws Throwable
+     * @throws Throwable 异常
      * @author caobaoyu
      * @date 2018/11/1 12:55
      */
